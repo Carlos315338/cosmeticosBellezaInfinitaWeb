@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/loginError.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&display=swap" rel="stylesheet">
+    <title>Cosméticos Belleza Infinita - Login</title>
+</head>
+
+<body>
+    <main class="login-container">
+        <img class="login-container__logo" src="images/logo.png" alt="Cosméticos Belleza Infinita Logo">
+        <form class="login-box" action="login.php" method="POST">
+            <label class="login-box__label" for="idNumber">Número de identificación</label>
+            <input class="login-box__input" type="text" name="idNumber" id="idNumber" required>
+            <label class="login-box__label" for="password">Contraseña</label>
+            <input class="login-box__input" type="password" name="password" id="password" required>
+            <input class="login-box__button" type="submit" value="Iniciar sesión">
+            <a class="login-box__forgot" href="#">¿Has olvidado tu contraseña?</a>
+        </form>
+        <span class="error-message">usuario o contraseña incorrecta</span>
+    </main>
+
+</body>
+
+</html>

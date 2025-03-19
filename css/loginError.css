@@ -1,0 +1,94 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Afacad Flux", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings: "slnt" 0;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f1e6ee;
+}
+
+img {
+  max-width: 15rem;
+  height: auto;
+  display: block;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  max-width: 30rem;
+}
+
+.login-box {
+  display: flex;
+  flex-direction: column;
+  background-color: #5c0061;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  box-shadow: 0rem 0.5rem 1rem rgba(0, 0, 0, 0.8);
+  width: 500px;
+}
+
+.login-box a {
+  text-align: center;
+}
+
+label {
+  color: white;
+  margin-bottom: 0.5rem;
+  font-weight: normal;
+  font-size: 1rem;
+  text-align: left;
+}
+
+input {
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.login-box__button {
+  background-color: #ff0072;
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+a {
+  color: white;
+}
+
+.error-message {
+  color: rgba(255, 0, 0, 1);
+  margin-top: 2rem;
+}
+
+@media (max-width: 600px) {
+  .login-box {
+    width: 90%; /* Ocupa el 90% del ancho en pantallas pequeñas */
+  }
+
+  img {
+    max-width: 15rem; /* Reduce el tamaño de la imagen en pantallas pequeñas */
+  }
+}

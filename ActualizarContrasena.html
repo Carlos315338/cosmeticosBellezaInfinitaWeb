@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/forgotPassword.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&display=swap" rel="stylesheet">
+    <title>Cosméticos Belleza Infinita - Login</title>
+</head>
+
+<body>
+    <main class="forgot-container">
+        <img class="forgot-container__logo" src="images/logo.png" alt="Cosméticos Belleza Infinita Logo">
+        <form class="forgot-box" action="login.php" method="POST">
+            <h2 class="forgot-box__title">Cambiar contraseña</h2>
+
+            <label class="forgot-box__label" for="currentPassword">Contraseña actual</label>
+            <input class="forgot-box__input" type="text" name="currentPassword" id="currentPassword" required>
+
+            <label class="forgot-box__label" for="newPassword">Nueva contraseña</label>
+            <input class="forgot-box__input" type="password" name="newPassword" id="newPassword" required>
+
+            <label class="forgot-box__label" for="confirmNewPassword">Vuelva a escribir la nueva contraseña</label>
+            <input class="forgot-box__input" type="text" name="confirmNewPassword" id="confirmNewPassword" required>
+
+            <section class="forgot-box-section">
+                <a class="forgot-box-section__cancel" href="#" onclick="redirectHome()">Cancelar</a>
+                <input class="forgot-box-section__button" type="submit" value="Guardar cambios"
+                    onclick="redirectHome()">
+            </section>
+        </form>
+    </main>
+    <script src="js/script.js"></script>
+</body>
+
+</html>

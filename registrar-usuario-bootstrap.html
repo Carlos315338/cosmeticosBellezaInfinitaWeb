@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/registrar-usuario.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&display=swap" rel="stylesheet">
+
+    <title>Cosméticos Belleza Infinita | </title>
+</head>
+
+<body>
+
+    <div class="contenedor ms-2">
+        <div class="row header">
+            <!--Encabezado-->
+            <div class="col-md-2 header__logo text-center">
+                <!--Encabezado logo-->
+                <img src="images/BellezaWhite.png" alt="logo Cosméticos Belleza Infinita">
+            </div>
+            <div class="col-md-8 align-self-center">
+                <!--Encabezado usuario-->
+                <img class="header__logo-user" src="images/active-user.png" alt="active-user">
+                <span>Cuenta activa:</span>
+                <span class="header__user-name">Carlos Stiven Viveros Palma</span>
+
+            </div>
+            <div class="col-md-2 text-center align-self-center">
+                <!--Encabezado cerrar sesión-->
+                <button class="btn btn-dark" onclick="redirectIndext()">Cerrar sesión</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 col-sm-12 g-0">
+                <nav class="nav">
+                    <!--Menú lateral-->
+                    <details class="col-12 nav__details ">
+                        <summary class="nav__tittle p-3" onclick="redirectHome()">Inicio</summary>
+                    </details>
+                    <details class="col-12 nav__details">
+                        <summary class="nav__summary">Clientes</summary>
+                        <ul>
+                            <li class="nav__list-item" onclick="redirectAdministarClientes()">Lista de Clientes</li>
+                            <li class="nav__list-item" onclick="registrarClientes()">Registrar Clientes</li>
+                        </ul>
+                    </details>
+                    <details class="col-12 nav__details">
+                        <summary class="nav__summary" onclick="administrarCategoria()">Categorías</summary>
+                    </details>
+                    <details class="col-12 nav__details">
+                        <summary class="nav__summary">Proveedores</summary>
+                        <ul>
+                            <li class="nav__list-item" onclick="redirectAdministarProveedores()">Lista de Proveedores
+                            </li>
+                            <li class="nav__list-item" onclick="registrarProveedores()">Registrar Proveedores</li>
+                        </ul>
+                    </details>
+                    <details class="col-12 nav__details">
+                        <summary class="nav__summary">Productos</summary>
+                        <ul>
+                            <li class="nav__list-item" onclick="redirectAdministarProductos()">Lista de Productos</li>
+                            <li class="nav__list-item" onclick="registrarProductos()">Registrar Productos</li>
+                        </ul>
+                    </details>
+                    <details class="col-12 nav__details">
+                        <summary class="nav__summary">Usuarios</summary>
+                        <ul>
+                            <li class="nav__list-item" onclick="redirectAdministarUsuarios()">Lista de Usuarios</li>
+                            <li class="nav__list-item" onclick="registrarUusuarios()">Registrar Usuarios</li>
+                        </ul>
+                    </details>
+                    <details class="col-12 nav__details">
+                        <summary class="nav__summary" onclick="administrarMetodoDePago()">Métodos de Pago</summary>
+                    </details>
+                    <details class="col-12 nav__details">
+                        <summary class="nav__summary">Ventas</summary>
+                        <ul>
+                            <li class="nav__list-item" onclick="registrarVentas()">Registrar Ventas</li>
+                        </ul>
+                    </details>
+                    <details class="col-12 nav__details">
+                        <summary class="nav__summary" onclick="ActualizarContrasena()">Cambiar Contraseña</summary>
+                    </details>
+                    <details class="col-12 nav__details">
+                        <summary class="nav__summary" onclick="reporteVentas()">Finanzas</summary>
+                    </details>
+                    <details class="col-12 nav__details">
+                        <summary class="nav__summary">Configuraciones</summary>
+                    </details>
+                </nav>
+
+            </div>
+            <div class="col-10">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-8">
+                        </div>
+                        <div class="col-4 text-end">
+                            <!--Hora-->
+                            <div>
+                                <time id="current-time"></time>
+                                <script>
+                                    function updateTime() {
+                                        const now = new Date();
+                                        const options = {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric',
+                                            hour: 'numeric',
+                                            minute: 'numeric',
+                                            second: 'numeric',
+                                            hour12: false
+                                        };
+                                        document.getElementById('current-time').textContent = now.toLocaleString('es-ES', options);
+                                        document.getElementById('current-time').setAttribute('datetime', now.toISOString());
+                                    }
+                                    setInterval(updateTime, 1000);
+                                    updateTime();
+                                </script>
+                            </div>
+                        </div>
+                        <div class="container pb-3 register-products">
+                            <!-- Encabezado -->
+                            <div class="row align-items-center text-white rounded mb-3 px-3 py-2 header-customer">
+                                <div class="col-md-6 d-flex align-items-center">
+                                    <img src="images/more.png" alt="" class="img-fluid me-2 img-menu-burger"
+                                        style="max-width: 20px;">
+                                    <h2 class="mb-0">Registrar Usuarios</h2>
+                                </div>
+                            </div>
+                            <!-- Formulario -->
+                            <form class="container-form pe-4 ps-4">
+                                <div class="row mb-3">
+                                    <!-- Nombre del usuario -->
+                                    <div class="col-md-4">
+                                        <label for="nombre" class="form-label">Nombre del usuario</label>
+                                        <input type="text" id="nombre" class="form-control"
+                                            placeholder="Ingrese el nombre">
+                                    </div>
+                                    <!-- Apellido del usuario -->
+                                    <div class="col-md-4">
+                                        <label for="apellido" class="form-label">Apellido del usuario</label>
+                                        <input type="text" id="apellido" class="form-control"
+                                            placeholder="Ingrese el apellido">
+                                    </div>
+                                    <!-- Identificación del usuario -->
+                                    <div class="col-md-4">
+                                        <label for="identificacion" class="form-label">Identificación</label>
+                                        <input type="text" id="identificacion" class="form-control"
+                                            placeholder="Ingrese la identificación">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <!-- Fecha de Nacimiento -->
+                                    <div class="col-md-4">
+                                        <label for="fecha_nacimiento" class="form-label">Fecha de nacimiento</label>
+                                        <input type="date" id="fecha_nacimiento" class="form-control">
+                                    </div>
+                                    <!-- Teléfono -->
+                                    <div class="col-md-4">
+                                        <label for="telefono" class="form-label">Teléfono</label>
+                                        <input type="text" id="telefono" class="form-control"
+                                            placeholder="Ingrese el teléfono">
+                                    </div>
+                                    <!-- Rol -->
+                                    <div class="col-md-4">
+                                        <label for="rol" class="form-label">Rol</label>
+                                        <input type="text" id="rol" class="form-control" placeholder="Ingrese el rol">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <!-- Contraseña -->
+                                    <div class="col-md-4">
+                                        <label for="contrasena" class="form-label">Contraseña</label>
+                                        <input type="password" id="contrasena" class="form-control"
+                                            placeholder="Ingrese la contraseña">
+                                    </div>
+                                    <!-- Confirmar Contraseña -->
+                                    <div class="col-md-4">
+                                        <label for="confirmar_contrasena" class="form-label">Confirmar
+                                            contraseña</label>
+                                        <input type="password" id="confirmar_contrasena" class="form-control"
+                                            placeholder="Repita la contraseña">
+                                    </div>
+                                    <div class="col-md-4">
+
+                                    </div>
+                                </div>
+                                <!-- Botones -->
+                                <div class="d-flex justify-content-end pb-2 pt-2 ">
+                                    <a href="#" class="btn btn-cancel me-2">Cancelar</a>
+                                    <button type="submit" class="btn btn-submit ">Guardar cambios</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row footer">
+            <!--Footer-->
+            <footer class="col-12 text-center footer__content">
+                <small class="footer__text">&copy; 2024 Cosméticos Belleza Infinita. Todos los derechos
+                    reservados.</small>
+                <small class="footer__developer">Desarrollado por Carlos Stiven Viveros Palma</small>
+            </footer>
+            <script src="js/script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/administrar-clientes.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&display=swap" rel="stylesheet">
+
+    <title>Cosméticos Belleza Infinita | </title>
+</head>
+
+<body>
+
+    <div class="contenedor ms-2">
+        <div class="row header">
+            <!--Encabezado-->
+            <div class="col-md-2 header__logo text-center">
+                <!--Encabezado logo-->
+                <img src="images/BellezaWhite.png" alt="logo Cosméticos Belleza Infinita">
+            </div>
+            <div class="col-md-8 align-self-center">
+                <!--Encabezado usuario-->
+                <img class="header__logo-user" src="images/active-user.png" alt="active-user">
+                <span>Cuenta activa:</span>
+                <span class="header__user-name">Carlos Stiven Viveros Palma</span>
+
+            </div>
+            <div class="col-md-2 text-center align-self-center">
+                <!--Encabezado cerrar sesión-->
+                <button class="btn btn-dark" onclick="redirectIndext()">Cerrar sesión</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 col-sm-12 g-0">
+                <nav class="nav">
+                    <!--Menú lateral-->
+                    <details class="col-12 nav__details ">
+                        <summary class="nav__tittle p-3" onclick="redirectHome()">Inicio</summary>
+                    </details>
+                    <details class="col-12 nav__details">
+                        <summary class="nav__summary">Clientes</summary>
+                        <ul>
+                            <li class="nav__list-item" onclick="redirectAdministarClientes()">Lista de Clientes</li>
+                            <li class="nav__list-item" onclick="registrarClientes()">Registrar Clientes</li>
+                        </ul>
+                    </details>
+                    <details class="col-12 nav__details">
+                        <summary class="nav__summary" onclick="administrarCategoria()">Categorías</summary>
+                    </details>
+                    <details class="col-12 nav__details">
+                        <summary class="nav__summary">Proveedores</summary>
+                        <ul>
+                            <li class="nav__list-item" onclick="redirectAdministarProveedores()">Lista de Proveedores
+                            </li>
+                            <li class="nav__list-item" onclick="registrarProveedores()">Registrar Proveedores</li>
+                        </ul>
+                    </details>
+                    <details class="col-12 nav__details">
+                        <summary class="nav__summary">Productos</summary>
+                        <ul>
+                            <li class="nav__list-item" onclick="redirectAdministarProductos()">Lista de Productos</li>
+                            <li class="nav__list-item" onclick="registrarProductos()">Registrar Productos</li>
+                        </ul>
+                    </details>
+                    <details class="col-12 nav__details">
+                        <summary class="nav__summary">Usuarios</summary>
+                        <ul>
+                            <li class="nav__list-item" onclick="redirectAdministarUsuarios()">Lista de Usuarios</li>
+                            <li class="nav__list-item" onclick="registrarUusuarios()">Registrar Usuarios</li>
+                        </ul>
+                    </details>
+                    <details class="col-12 nav__details">
+                        <summary class="nav__summary" onclick="administrarMetodoDePago()">Métodos de Pago</summary>
+                    </details>
+                    <details class="col-12 nav__details">
+                        <summary class="nav__summary">Ventas</summary>
+                        <ul>
+                            <li class="nav__list-item" onclick="registrarVentas()">Registrar Ventas</li>
+                        </ul>
+                    </details>
+                    <details class="col-12 nav__details">
+                        <summary class="nav__summary" onclick="ActualizarContrasena()">Cambiar Contraseña</summary>
+                    </details>
+                    <details class="col-12 nav__details">
+                        <summary class="nav__summary" onclick="reporteVentas()">Finanzas</summary>
+                    </details>
+                    <details class="col-12 nav__details">
+                        <summary class="nav__summary">Configuraciones</summary>
+                    </details>
+                </nav>
+            </div>
+            <div class="col-10">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-8 text-start">
+                            <!--Titulo-->
+                            <h1 class="clients__title pt-2 pb-2">Lista de Proveedores</h1>
+                        </div>
+                        <div class="col-4 text-end">
+                            <!--Hora-->
+                            <div>
+                                <time id="current-time"></time>
+                                <script>
+                                    function updateTime() {
+                                        const now = new Date();
+                                        const options = {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric',
+                                            hour: 'numeric',
+                                            minute: 'numeric',
+                                            second: 'numeric',
+                                            hour12: false
+                                        };
+                                        document.getElementById('current-time').textContent = now.toLocaleString('es-ES', options);
+                                        document.getElementById('current-time').setAttribute('datetime', now.toISOString());
+                                    }
+                                    setInterval(updateTime, 1000);
+                                    updateTime();
+                                </script>
+                            </div>
+                        </div>
+                        <div class="row table-content">
+                            <div class="col-12 g-0">
+                                <!-- Header de Clientes -->
+                                <div class="row align-items-center text-white rounded mb-3 px-3 py-2 header-customer">
+                                    <div class="col-sm-8 col-md-6 d-flex align-items-center">
+                                    </div>
+                                    <!-- Barra de Búsqueda -->
+                                    <div class="col-sm-4 col-md-6 d-flex align-items-center justify-content-end">
+                                        <input type="text" class="form-control w-50 me-2" placeholder="Buscar">
+                                        <img src="images/search.png" alt="" class="img-fluid search-icon"
+                                            style="max-width: 20px;">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Tabla de Clientes -->
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead class="table-light text-center">
+                                        <tr>
+                                            <th>Acción</th>
+                                            <th>NIT Proveedor</th>
+                                            <th>Nombre Proveedor</th>
+                                            <th>Correo Electrónico</th>
+                                            <th>Teléfono</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-center">
+                                                <button class="btn btn-sm btn-outline-primary me-1">✏️</button>
+                                                <button class="btn btn-sm btn-outline-danger">🗑️</button>
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center">
+                                                <button class="btn btn-sm btn-outline-primary me-1">✏️</button>
+                                                <button class="btn btn-sm btn-outline-danger">🗑️</button>
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center">
+                                                <button class="btn btn-sm btn-outline-primary me-1">✏️</button>
+                                                <button class="btn btn-sm btn-outline-danger">🗑️</button>
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center">
+                                                <button class="btn btn-sm btn-outline-primary me-1">✏️</button>
+                                                <button class="btn btn-sm btn-outline-danger">🗑️</button>
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center">
+                                                <button class="btn btn-sm btn-outline-primary me-1">✏️</button>
+                                                <button class="btn btn-sm btn-outline-danger">🗑️</button>
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row">
+                                <div class="col-auto col-sm-12 col-md-6 col-xl-8 align-content-center">
+                                    <button class="btn add-btn-customer" onclick=" registrarProveedores()">Agregar
+                                        Proveedor</button>
+                                </div>
+                                <div class="col-auto col-sm-12 col-md-6 col-xl-4 align-content-center text-center">
+                                    <nav aria-label="...">
+                                        <ul class="pagination">
+                                            <li class="page-item disabled">
+                                                <span class="page-link">Anteriores</span>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                            <li class="page-item active" aria-current="page">
+                                                <span class="page-link">2</span>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#">Siguiente</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row footer">
+            <!--Footer-->
+            <footer class="col-12 text-center footer__content">
+                <small class="footer__text">&copy; 2024 Cosméticos Belleza Infinita. Todos los derechos
+                    reservados.</small>
+                <small class="footer__developer">Desarrollado por Carlos Stiven Viveros Palma</small>
+            </footer>
+        </div>
+        <script src="js/script.js"></script>
+</body>
+
+</html>
