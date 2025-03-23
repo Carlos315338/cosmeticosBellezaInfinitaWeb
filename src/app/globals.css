@@ -20,7 +20,69 @@
 }
 
 body {
-  background: var(--background);
+  background: #f1e6ee;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.login-box {
+  background-color: #5c0061;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  box-shadow: 0rem 0.5rem 1rem rgba(0, 0, 0, 0.8);
+  width: 500px;
+}
+
+.login-box a {
+  text-align: center;
+}
+
+form {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.forgot-box__title {
+  color: white;
+}
+
+label {
+  color: white;
+  margin-bottom: 0.5rem;
+  font-weight: normal;
+  font-size: 1rem;
+  text-align: left;
+}
+
+input {
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
+  background-color: white;
+}
+
+.login-box__button {
+  background-color: #ff0072;
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+a {
+  color: white;
+}
+
