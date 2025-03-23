@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import TimeDisplay from "./TimeDisplay";
 
 const CurrentTime = () => {
   const [currentTime, setCurrentTime] = useState("");
@@ -25,10 +26,8 @@ const CurrentTime = () => {
   }, []);
 
   return (
-    <div className="col-4 text-end">
-      <time dateTime={new Date().toISOString()} style={{ color: "black" }}>
-        {currentTime}
-      </time>
+    <div className="text-end">
+      <TimeDisplay />
     </div>
   );
 };

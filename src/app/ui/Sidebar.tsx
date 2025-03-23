@@ -1,7 +1,11 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Sidebar() {
+
+  const router = useRouter();
+
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
@@ -9,26 +13,26 @@ export default function Sidebar() {
   return (
     <nav className="nav text-decoration-none">
       <details className="col-12 nav__details" open>
-        <summary className="nav__tittle text-center">Inicio</summary>
+        <summary className="nav__tittle text-center" onClick={() => router.push('/dashboard')}>Inicio</summary>
       </details>
 
       <details className="col-12 nav__details">
         <summary className="nav__summary ps-4">Clientes</summary>
         <ul className="nav__list w-100 d-block ps-5">
-          <li className="nav__list-item w-100">Lista de Clientes</li>
-          <li className="nav__list-item w-100">Registrar Clientes</li>
+          <li className="nav__list-item w-100" onClick={() => router.push('/dashboard/clientes/lista')}>Lista de Clientes</li>
+          <li className="nav__list-item w-100" onClick={() => router.push('/dashboard/clientes/nuevo')}>Registrar Clientes</li>
         </ul>
       </details>
 
       <details className="col-12 nav__details">
-        <summary className="nav__summary ps-4">Categorías</summary>
+        <summary className="nav__summary ps-4" onClick={() => router.push('/dashboard/categorias')}>Categorías</summary>
       </details>
 
       <details className="col-12 nav__details">
         <summary className="nav__summary ps-4">Proveedores</summary>
         <ul className="nav__list  w-100 d-block ps-5">
-          <li className="nav__list-item w-100">Lista de Proveedores</li>
-          <li className="nav__list-item w-100">Registrar Proveedores</li>
+          <li className="nav__list-item w-100" onClick={() => router.push('/dashboard/proveedores/lista')}>Lista de Proveedores</li>
+          <li className="nav__list-item w-100" onClick={() => router.push('/dashboard/proveedores/nuevo')}>Registrar Proveedores</li>
         </ul>
       </details>
 

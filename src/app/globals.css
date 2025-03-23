@@ -220,3 +220,100 @@ li {
 .card {
   border-radius: 16px !important;
 }
+
+
+.contenedor {
+  background-color: #f1e6ee;
+}
+
+.cards-containers {
+  background-color: white;
+  border-radius: 0.25rem;
+}
+
+.card-header-compras {
+  background-color: #5c0061;
+  color: white;
+  border-start-end-radius: 16px !important;
+  border-start-start-radius: 16px !important;
+}
+
+.card-header-ventas {
+  background-color: #ff0072;
+  color: white;
+  border-start-end-radius: 16px !important;
+  border-start-start-radius: 16px !important;
+}
+
+.card {
+  border-radius: 16px !important;
+}
+
+/* Sección de Clientes */
+
+.header-customer {
+  background-color: #5c0061;
+}
+
+.clients__title {
+  font-size: 3rem;
+  color: #5c0061;
+}
+
+.img-menu-burger,
+.search-icon {
+  filter: invert(100%) brightness(1000%);
+}
+
+.table-content {
+  background-color: white;
+}
+
+
+
+.cards-containers {
+  background-color: white;
+  border-radius: 0.25rem;
+}
+
+.card-header-compras {
+  background-color: #5c0061;
+  color: white;
+  border-start-end-radius: 16px !important;
+  border-start-start-radius: 16px !important;
+}
+
+.card-header-ventas {
+  background-color: #ff0072;
+  color: white;
+  border-start-end-radius: 16px !important;
+  border-start-start-radius: 16px !important;
+}
+
+.card {
+  border-radius: 16px !important;
+}
+
+/* Sección de Clientes */
+
+.header-customer {
+  background-color: #5c0061;
+}
+.register-customer {
+  background-color: white;
+}
+
+.clients__title {
+  font-size: 3rem;
+  color: #5c0061;
+}
+
+.img-menu-burger,
+.search-icon {
+  filter: invert(100%) brightness(1000%);
+}
+
+.container-form {
+  background-color: #f1e6ee;
+  border-radius: 16px;
+}
