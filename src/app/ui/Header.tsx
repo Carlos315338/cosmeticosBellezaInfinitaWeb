@@ -1,36 +1,31 @@
+// app/ui/Header.tsx
 'use client';
 
-import React from 'react';
 import Image from 'next/image';
 
 interface HeaderProps {
   userName: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ userName }) => {
+export default function Header({ userName }: HeaderProps) {
   return (
-    <header className="bg-white shadow-md py-3 px-6 flex justify-between items-center">
-      <div className="flex items-center space-x-4">
-        <Image src="/logo.png" alt="Logo" width={140} height={60} />
+    <div className="row header p-3 shadow-sm">
+      {/* Logo */}
+      <div className="col-md-2 text-center">
+        <Image src="/BellezaWhite.png" alt="Logo" width={120} height={60} />
       </div>
 
-      <div className="flex items-center gap-3">
-        <Image
-          src="/images/active-user.png"
-          alt="Usuario activo"
-          width={32}
-          height={32}
-          className="rounded-full"
-        />
-        <span className="text-sm text-gray-600">Cuenta activa:</span>
-        <span className="font-semibold text-sm text-purple-900">{userName}</span>
+      {/* Usuario activo */}
+      <div className="col-md-8 align-self-center d-flex align-items-center">
+        <Image src="/active-user.png" alt="Usuario activo" width={32} height={32} className="header__logo-user" />
+        <span className="me-2">Cuenta activa:</span>
+        <span className="header__user-name">{userName}</span>
       </div>
 
-      <button className="bg-gray-800 text-white px-4 py-2 rounded-md text-sm hover:bg-gray-700">
-        Cerrar sesión
-      </button>
-    </header>
+      {/* Botón cerrar sesión */}
+      <div className="col-md-2 text-center align-self-center">
+        <button className="btn btn-dark" onClick={() => alert('Cerrar sesión')}>Cerrar sesión</button>
+      </div>
+    </div>
   );
-};
-
-export default Header;
+}

@@ -4,18 +4,22 @@
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useState } from 'react';
+import { signIn } from '@aws-amplify/auth';
 
 export default function LoginPage() {
   const router = useRouter();
   const [idNumber, setIdNumber] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent)  =>  {
     e.preventDefault();
+
+    //const user = await signIn({ username: idNumber, password });
+    //console.log('✅ Login exitoso', user);
   
     console.log('Número de identificación:', idNumber);
     console.log('Contraseña:', password);
-  
+    const baba = {idNumber, password}
     router.push('/dashboard');
   };
   
