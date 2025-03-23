@@ -87,6 +87,10 @@ a {
   color: white;
 }
 
+h1 {
+  color: black;
+}
+
 .header__logo-user {
   max-width: 2rem;
   margin: 0 1rem;
@@ -117,6 +121,7 @@ img {
 
 .nav__tittle {
   font-size: 1.5rem;
+  list-style: none;
   font-weight: bold;
   background-color: #5c0061;
   border-radius: 0.25rem;
@@ -129,6 +134,7 @@ img {
 }
 
 .nav__summary {
+  list-style: none;
   font-weight: bold;
   padding: 0.8rem;
   background-color: white;
@@ -197,21 +203,20 @@ li {
   border-radius: 0.25rem;
 }
 
-.card-header-compras{
+.card-header-compras {
   background-color: #5c0061;
   color: white;
   border-start-end-radius: 16px !important;
   border-start-start-radius: 16px !important;
 }
 
-.card-header-ventas{
+.card-header-ventas {
   background-color: #ff0072;
   color: white;
   border-start-end-radius: 16px !important;
   border-start-start-radius: 16px !important;
 }
 
-.card{
+.card {
   border-radius: 16px !important;
 }
-

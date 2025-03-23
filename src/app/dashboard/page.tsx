@@ -1,18 +1,19 @@
 // app/dashboard/page.tsx
-'use client';
+"use client";
 
-import DashboardLayout from '../ui/DashboardLayout';
-import CardMetric from '../ui/CardMetric';
-import CardResumen from '../ui/CardResumen';
+import DashboardLayout from "../ui/DashboardLayout";
+import CardMetric from "../ui/CardMetric";
+import CardResumen from "../ui/CardResumen";
+import CurrentTime from "../ui/CurrentTime";
 
 export default function DashboardPage() {
   return (
     <DashboardLayout userName="Carlos Stiven Viveros Palma">
       <div className="container">
-        <div className="row my-4">
-          <h1 className="text-start">Inicio</h1>
+        <div className="row my-2">
+          <h1 className="col-8 text-start">Inicio</h1>
+          <CurrentTime />
         </div>
-
         <div className="row">
           <CardMetric title="Empleados" value="5" image="/team.png" />
           <CardMetric title="Productos" value="800" image="/products.png" />
