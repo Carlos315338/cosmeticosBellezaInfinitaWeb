@@ -39,40 +39,40 @@ export default function Sidebar() {
       <details className="col-12 nav__details">
         <summary className="nav__summary ps-4">Productos</summary>
         <ul className="nav__list  w-100 d-block ps-5">
-          <li className="nav__list-item w-100">Lista de Productos</li>
-          <li className="nav__list-item w-100">Registrar Productos</li>
+          <li className="nav__list-item w-100" onClick={() => router.push('/dashboard/productos/lista')}>Lista de Productos</li>
+          <li className="nav__list-item w-100" onClick={() => router.push('/dashboard/productos/nuevo')}>Registrar Productos</li>
         </ul>
       </details>
 
       <details className="col-12 nav__details">
         <summary className="nav__summary ps-4">Usuarios</summary>
         <ul className="nav__list  w-100 d-block ps-5">
-          <li className="nav__list-item w-100">Lista de Usuarios</li>
-          <li className="nav__list-item w-100">Registrar Usuarios</li>
+          <li className="nav__list-item w-100" onClick={() => router.push('/dashboard/usuarios/lista')}>Lista de Usuarios</li>
+          <li className="nav__list-item w-100" onClick={() => router.push('/dashboard/usuarios/nuevo')}>Registrar Usuarios</li>
         </ul>
       </details>
 
       <details className="col-12 nav__details">
-        <summary className="nav__summary ps-4">Métodos de Pago</summary>
+        <summary className="nav__summary ps-4" onClick={() => router.push('/dashboard/metodos-pago')}>Métodos de Pago</summary>
       </details>
 
       <details className="col-12 nav__details">
         <summary className="nav__summary ps-4">Ventas</summary>
         <ul className="nav__list  w-100 d-block ps-5">
-          <li className="nav__list-item w-100">Registrar Ventas</li>
+          <li className="nav__list-item w-100" onClick={() => router.push('/dashboard/ventas/nuevo')}>Registrar Ventas</li>
         </ul>
       </details>
 
       <details className="col-12 nav__details">
-        <summary className="nav__summary ps-4">Cambiar Contraseña</summary>
+        <summary className="nav__summary ps-4" onClick={() => router.push('/dashboard/cambiar-clave')}>Cambiar Contraseña</summary>
       </details>
 
       <details className="col-12 nav__details">
-        <summary className="nav__summary ps-4">Finanzas</summary>
+        <summary className="nav__summary ps-4" onClick={() => router.push('/dashboard/finanzas')}>Finanzas</summary>
       </details>
 
       <details className="col-12 nav__details">
-        <summary className="nav__summary ps-4">Configuraciones</summary>
+        <summary className="nav__summary ps-4" onClick={() => router.push('/dashboard/configuracion')}>Configuraciones</summary>
       </details>
     </nav>
   );
