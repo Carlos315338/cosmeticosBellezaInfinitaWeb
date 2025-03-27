@@ -1,4 +1,3 @@
-// app/lib/amplify-config.ts
 import { Amplify } from 'aws-amplify';
 
 Amplify.configure({

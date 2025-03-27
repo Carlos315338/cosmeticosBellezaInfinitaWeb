@@ -1,4 +1,3 @@
-// app/auth/login/page.tsx
 'use client';
 
 import { useRouter } from 'next/navigation';
@@ -6,35 +5,20 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { signIn } from '@aws-amplify/auth';
 import { useAuth } from '@/context/AuthContext';
+import { fetchAuthSession } from '@aws-amplify/auth';
 
 export default function LoginPage() {
   const router = useRouter();
   const [idNumber, setIdNumber] = useState('');
   const [password, setPassword] = useState('');
 
-  //const handleSubmit = async (e: React.FormEvent)  =>  {
-  //  e.preventDefault();
-
-    //const user = await signIn({ username: idNumber, password });
-    //console.log('✅ Login exitoso', user);
-  
-  //  console.log('Número de identificación:', idNumber);
-  //  console.log('Contraseña:', password);
-  //  const baba = {idNumber, password}
-  //  router.push('/dashboard');
-  //};
-
-  //const router = useRouter();
   const { setAuthData } = useAuth();
-
-  //const [idNumber, setIdNumber] = useState('');
-  //const [password, setPassword] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       //const user = await Auth.signIn(idNumber, password);
-      const user = await signIn({ username: idNumber, password });
+      //const user = await signIn({ username: idNumber, password });
       setAuthData("username", "accessToken", "refreshToken");
       router.push('/dashboard');
     } catch (error) {
@@ -42,6 +26,23 @@ export default function LoginPage() {
       alert('Credenciales inválidas');
     }
   };
+
+  
+
+//  const getTokens = async () => {
+//    try {
+//      const session = await fetchAuthSession();
+//
+//      const idToken = session.tokens?.idToken?.toString();
+//      const accessToken = session.tokens?.accessToken?.toString();
+//
+//      console.log('ID Token:', idToken);
+//      console.log('Access Token:', accessToken);
+//    } catch (err) {
+//      console.error('Error al obtener los tokens:', err);
+//    }
+//  };
+
   
 
   return (
