@@ -1,13 +1,13 @@
 'use client';
-
+import '@/services/amplify-config';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useState } from 'react';
-import { signIn } from '@aws-amplify/auth';
+import { getCurrentUser, signIn, signOut } from '@aws-amplify/auth';
 import { useAuth } from '@/context/AuthContext';
-import { fetchAuthSession } from '@aws-amplify/auth';
 
 export default function LoginPage() {
+
   const router = useRouter();
   const [idNumber, setIdNumber] = useState('');
   const [password, setPassword] = useState('');
@@ -16,9 +16,19 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    try {
+      const user = await getCurrentUser();
+      console.log('Ya hay un usuario logueado:', user);
+      await signOut(); 
+    } catch {
+      // No hay sesión activa, está bien continuar
+    }
+
     try {
       //const user = await Auth.signIn(idNumber, password);
-      //const user = await signIn({ username: idNumber, password });
+      const user = await signIn({ username: idNumber, password });
+      console.log(user);
       setAuthData("username", "accessToken", "refreshToken");
       router.push('/dashboard');
     } catch (error) {
@@ -26,23 +36,6 @@ export default function LoginPage() {
       alert('Credenciales inválidas');
     }
   };
-
-  
-
-//  const getTokens = async () => {
-//    try {
-//      const session = await fetchAuthSession();
-//
-//      const idToken = session.tokens?.idToken?.toString();
-//      const accessToken = session.tokens?.accessToken?.toString();
-//
-//      console.log('ID Token:', idToken);
-//      console.log('Access Token:', accessToken);
-//    } catch (err) {
-//      console.error('Error al obtener los tokens:', err);
-//    }
-//  };
-
   
 
   return (

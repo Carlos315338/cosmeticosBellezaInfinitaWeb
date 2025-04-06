@@ -1,13 +1,24 @@
 // app/ui/Header.tsx
 'use client';
 
+import { signOut } from '@aws-amplify/auth';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import '@/services/amplify-config';
 
 interface HeaderProps {
   userName: string;
 }
 
 export default function Header({ userName }: HeaderProps) {
+
+  const router = useRouter();
+
+  const cerrarSesion = async () => {
+    await signOut();
+    router.push('/');
+  };
+
   return (
     <div className="row header p-3 shadow-sm">
       {/* Logo */}
@@ -24,7 +35,7 @@ export default function Header({ userName }: HeaderProps) {
 
       {/* Botón cerrar sesión */}
       <div className="col-md-2 text-center align-self-center">
-        <button className="btn btn-dark" onClick={() => alert('Cerrar sesión')}>Cerrar sesión</button>
+        <button className="btn btn-dark" onClick={cerrarSesion}>Cerrar sesión</button>
       </div>
     </div>
   );
