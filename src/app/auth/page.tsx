@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { getCurrentUser, signIn, signOut } from '@aws-amplify/auth';
 import { useAuth } from '@/context/AuthContext';
+import { clienteService } from '@/services/clientes/clienteService';
 
 export default function LoginPage() {
 
@@ -29,7 +30,8 @@ export default function LoginPage() {
       //const user = await Auth.signIn(idNumber, password);
       const user = await signIn({ username: idNumber, password });
       console.log(user);
-      setAuthData("username", "accessToken", "refreshToken");
+      const usuarioLogueado = await clienteService.obtenerPorId(idNumber);
+      setAuthData(usuarioLogueado);
       router.push('/dashboard');
     } catch (error) {
       console.error('Error de login', error);

@@ -1,11 +1,8 @@
 // app/dashboard/categorias/page.tsx
 'use client';
 
-import DashboardLayout from '@/app/ui/DashboardLayout';
-
 export default function CategoriasPage() {
   return (
-    <DashboardLayout userName="Carlos Stiven Viveros Palma">
       <div className="container">
         <h1 className="pt-4 pb-3">Categorías de Productos</h1>
 
@@ -50,6 +47,5 @@ export default function CategoriasPage() {
           </table>
         </div>
       </div>
-    </DashboardLayout>
   );
 }

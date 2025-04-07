@@ -5,7 +5,7 @@ import DashboardLayout from '@/app/ui/DashboardLayout';
 
 export default function MetodosPagoPage() {
   return (
-    <DashboardLayout userName="Carlos Stiven Viveros Palma">
+    
       <div className="container">
         <h1 className="pt-4 pb-3">Métodos de Pago</h1>
 
@@ -50,6 +50,6 @@ export default function MetodosPagoPage() {
           </table>
         </div>
       </div>
-    </DashboardLayout>
+    
   );
 }

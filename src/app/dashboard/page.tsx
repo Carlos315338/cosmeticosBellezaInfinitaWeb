@@ -9,7 +9,7 @@ import AuthGuard from "../ui/AuthGuard";
 
 export default function DashboardPage() {
   return (
-      <DashboardLayout userName="Carlos Stiven Viveros Palma">
+      
         <div className="container">
           <div className="row my-2">
             <h1 className="col-8 text-start">Inicio</h1>
@@ -45,6 +45,6 @@ export default function DashboardPage() {
             />
           </div>
         </div>
-      </DashboardLayout>
+      
   );
 }

@@ -6,7 +6,7 @@ import TimeDisplay from '@/app/ui/TimeDisplay';
 
 export default function ReporteVentasPage() {
   return (
-    <DashboardLayout userName="Carlos Stiven Viveros Palma">
+    
       <div className="container mt-4">
         <div className="row">
           <div className="col-8">
@@ -68,6 +68,6 @@ export default function ReporteVentasPage() {
           <button className="btn btn-submit" onClick={() => window.print()}>Imprimir Reporte</button>
         </div>
       </div>
-    </DashboardLayout>
+    
   );
 }

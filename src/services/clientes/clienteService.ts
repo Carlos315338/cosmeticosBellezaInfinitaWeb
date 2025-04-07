@@ -1,5 +1,5 @@
 import api from '../api';
-import { Cliente, CrearClienteDTO } from './clienteTypes';
+import { Cliente, CrearClienteDTO, UsuarioDTO } from './clienteTypes';
 
 export const clienteService = {
   listar: async (): Promise<Cliente[]> => {
@@ -7,8 +7,8 @@ export const clienteService = {
     return res.data;
   },
 
-  obtenerPorId: async (id: string): Promise<Cliente> => {
-    const res = await api.get(`/clientes/${id}`);
+  obtenerPorId: async (id: string): Promise<UsuarioDTO> => {
+    const res = await api.get(`/usuario/findbyId/${id}`);
     return res.data;
   },
 

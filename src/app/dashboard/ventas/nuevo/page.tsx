@@ -4,7 +4,7 @@ import DashboardLayout from '@/app/ui/DashboardLayout';
 
 export default function VentasNuevoPage() {
   return (
-    <DashboardLayout userName="Carlos Stiven Viveros Palma">
+    
       <div className="container">
         <h1 className="pt-4 pb-3">Registrar Ventas</h1>
 
@@ -107,6 +107,6 @@ export default function VentasNuevoPage() {
           </div>
         </form>
       </div>
-    </DashboardLayout>
+    
   );
 }

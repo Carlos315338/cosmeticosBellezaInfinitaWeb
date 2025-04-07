@@ -4,7 +4,7 @@ import DashboardLayout from '@/app/ui/DashboardLayout';
 
 export default function ProveedoresListaPage() {
   return (
-    <DashboardLayout userName="Carlos Stiven Viveros Palma">
+    
       <div className="container">
         <h1 className="pt-4 pb-2">Lista de Proveedores</h1>
 
@@ -36,6 +36,6 @@ export default function ProveedoresListaPage() {
           </table>
         </div>
       </div>
-    </DashboardLayout>
+    
   );
 }

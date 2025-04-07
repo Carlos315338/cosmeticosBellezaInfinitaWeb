@@ -4,7 +4,7 @@ import DashboardLayout from '@/app/ui/DashboardLayout';
 
 export default function UsuariosNuevoPage() {
   return (
-    <DashboardLayout userName="Carlos Stiven Viveros Palma">
+    
       <div className="container">
         <h1 className="pt-4 pb-3">Registrar Usuarios</h1>
 
@@ -56,6 +56,6 @@ export default function UsuariosNuevoPage() {
           </div>
         </form>
       </div>
-    </DashboardLayout>
+    
   );
 }

@@ -4,17 +4,20 @@
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
+import { useAuth } from "@/context/AuthContext";
 
 interface Props {
   children: React.ReactNode;
-  userName: string;
 }
 
-export default function DashboardLayout({ children, userName }: Props) {
+export default function DashboardLayout({ children }: Props) {
+
+  const { user, logout } = useAuth();
+
   return (
     <div className="contenedor">
       <div className="row">
-        <Header userName={userName} />
+        <Header userName={user?.nombreUsuario ?? 'Usuario'} />
       </div>
       <div className="row">
         <div className="col-md-2 col-sm-12 g-0">

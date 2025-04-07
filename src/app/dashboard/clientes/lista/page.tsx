@@ -1,11 +1,9 @@
 'use client';
 
-import DashboardLayout from '@/app/ui/DashboardLayout';
 import TimeDisplay from '@/app/ui/TimeDisplay';
 
 export default function ClientesListaPage() {
   return (
-    <DashboardLayout userName="Carlos Stiven Viveros Palma">
       <div className="container">
         <div className="row mb-3">
           <div className="col-8 text-start">
@@ -58,6 +56,6 @@ export default function ClientesListaPage() {
           </table>
         </div>
       </div>
-    </DashboardLayout>
+    
   );
 }

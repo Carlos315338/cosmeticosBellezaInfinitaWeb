@@ -6,7 +6,7 @@ import TimeDisplay from '@/app/ui/TimeDisplay';
 
 export default function UsuariosListaPage() {
   return (
-    <DashboardLayout userName="Carlos Stiven Viveros Palma">
+    
       <div className="container">
         <div className="row mb-3">
           <div className="col-8 text-start">
@@ -57,6 +57,6 @@ export default function UsuariosListaPage() {
           </table>
         </div>
       </div>
-    </DashboardLayout>
+    
   );
 }
