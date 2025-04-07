@@ -23,7 +23,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
       })
       .catch(() => {
         if (privateRoutes.some((r) => pathname.startsWith(r))) {
-          router.push('/unauthorized');
+          router.push('/auth'); // unauthorized
         } else {
           setChecking(false);
         }
