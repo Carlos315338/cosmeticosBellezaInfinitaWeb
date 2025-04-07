@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
 import '@/services/amplify-config';
 import { AuthProvider } from "@/context/AuthContext";
+import AuthGuard from "./ui/AuthGuard";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +31,9 @@ export default function RootLayout({
     <html lang="es">
       <body className={`${geistSans.variable} ${geistMono.variable} rosaFondo antialiased text-gray-800 min-h-screen flex flex-col`} >
         <AuthProvider>
+          <AuthGuard>
             {children}
+          </AuthGuard>
         </AuthProvider>
       </body>
     </html>

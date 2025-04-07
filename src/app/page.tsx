@@ -3,10 +3,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-// 'use client';
-// import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-
-
 export default function Home() {
 
   const router = useRouter();

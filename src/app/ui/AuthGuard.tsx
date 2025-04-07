@@ -1,24 +1,34 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { getCurrentUser } from '@aws-amplify/auth';
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
   const [checking, setChecking] = useState(true);
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const publicRoutes = ['/', '/auth', '/login', '/registro'];
+  const privateRoutes = ['/dashboard'];
 
   useEffect(() => {
     getCurrentUser()
-      .then(() => setChecking(false))
+      .then(() => {
+        if (publicRoutes.includes(pathname)) {
+          router.push('/dashboard');
+        } else {
+          setChecking(false);
+        }
+      })
       .catch(() => {
-        router.push('/auth'); // redirige si no hay sesión
+        if (privateRoutes.some((r) => pathname.startsWith(r))) {
+          router.push('/unauthorized');
+        } else {
+          setChecking(false);
+        }
       });
-  }, []);
-
-  if (checking) {
-    return <div>Cargando sesión...</div>; // o spinner
-  }
+  }, [pathname]);
 
   return <>{children}</>;
 }
