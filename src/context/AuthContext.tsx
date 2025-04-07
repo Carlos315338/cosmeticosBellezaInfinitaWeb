@@ -1,8 +1,7 @@
-// AuthContext.tsx
 'use client';
 
 import { createContext, useContext, useState, ReactNode } from 'react';
-import { UsuarioDTO } from '@/services/clientes/clienteTypes';
+import { UsuarioDTO } from '@/services/usuarios/clienteTypes';
 
 interface AuthContextType {
   user: UsuarioDTO | null;
