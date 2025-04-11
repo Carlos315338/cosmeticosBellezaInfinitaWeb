@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cosméticos Belleza Infinita - Dashboard Web
 
-## Getting Started
+Este proyecto es un panel de administración para el sistema **Cosméticos Belleza Infinita**, desarrollado con **Next.js**, **TypeScript**, **TailwindCSS** y **PostCSS**. El objetivo es gestionar productos, usuarios, clientes, proveedores y reportes de ventas de forma moderna y eficiente.
 
-First, run the development server:
+## 🛠️ Tecnologías Utilizadas
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Next.js** (App Router)
+- **TypeScript**
+- **Tailwind CSS** + PostCSS
+- **ESLint** con configuración personalizada
+- **Context API** para autenticación
+- **AWS Amplify** (Auth)
+- **React Hooks**
+- **Webpack 5**
+- **Modularización con alias `@/*` vía tsconfig.json**
+
+## 🚀 Estructura de Carpetas
+
+```
+src/
+├── app/
+│   ├── layout.tsx            # Layout raíz
+│   ├── page.tsx              # Página inicial o login
+│   └── dashboard/
+│       └── page.tsx          # Página principal del dashboard
+├── components/
+│   ├── AuthGuard.tsx
+│   ├── CardMetric.tsx
+│   ├── CardResumen.tsx
+│   ├── Header.tsx
+│   ├── Sidebar.tsx
+│   ├── Footer.tsx
+│   ├── CurrentTime.tsx
+│   └── TimeDisplay.tsx
+├── context/
+│   └── AuthContext.tsx
+├── services/
+│   ├── api.ts
+│   ├── usuarioService.ts
+│   └── clienteTypes.ts
+├── config/
+│   └── amplify-config.ts
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔐 Autenticación
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+La autenticación se maneja con **AWS Amplify**, protegida por `AuthGuard.tsx` y contexto global (`AuthContext.tsx`). Las rutas privadas como `/dashboard` están protegidas y requieren sesión activa.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🧩 Navegación
 
-## Learn More
+La navegación usa `useRouter()` de Next.js para rutas internas y está encapsulada dentro de `Sidebar` y `DashboardLayout`.
 
-To learn more about Next.js, take a look at the following resources:
+## 📦 Scripts de uso
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# Instalación de dependencias
+npm install
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Desarrollo local
+npm run dev
 
-## Deploy on Vercel
+# Build para producción
+npm run build
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Linter
+npm run lint
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📌 Notas
+
+- El proyecto usa `paths` personalizados (`@/*`) definidos en `tsconfig.json`.
+- `AuthGuard` y `AuthContext` aseguran que las vistas críticas estén protegidas.
+- Los estilos están hechos 100% con Tailwind y pueden personalizarse desde `tailwind.config.js` y `postcss.config.mjs`.
+
+---
+
+Desarrollado con ❤️ por el equipo de Cosméticos Belleza Infinita.
