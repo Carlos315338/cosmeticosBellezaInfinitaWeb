@@ -25,4 +25,10 @@ export interface UsuarioDTO {
 export interface RolDTO {
   idRol: string;
   nombreRol: string;
+  modulos: ModuloDTO[];
+}
+
+export interface ModuloDTO {
+  id: string;
+  nombre: string;
 }

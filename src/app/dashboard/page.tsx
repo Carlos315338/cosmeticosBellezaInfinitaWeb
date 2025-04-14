@@ -1,11 +1,9 @@
 // app/dashboard/page.tsx
 "use client";
 
-import DashboardLayout from "../ui/DashboardLayout";
 import CardMetric from "../ui/CardMetric";
 import CardResumen from "../ui/CardResumen";
 import CurrentTime from "../ui/CurrentTime";
-import AuthGuard from "../ui/AuthGuard";
 
 export default function DashboardPage() {
   return (

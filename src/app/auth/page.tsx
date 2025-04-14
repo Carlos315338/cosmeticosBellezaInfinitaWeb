@@ -29,7 +29,6 @@ export default function LoginPage() {
     try {
       //const user = await Auth.signIn(idNumber, password);
       const user = await signIn({ username: idNumber, password });
-      console.log(user);
       const usuarioLogueado = await usuarioService.obtenerPorId(idNumber);
       setAuthData(usuarioLogueado);
       router.push('/dashboard');

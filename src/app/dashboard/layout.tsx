@@ -2,11 +2,14 @@
 
 import { ReactNode } from 'react';
 import DashboardLayout from '../ui/DashboardLayout';
+import ModuloGuard from '../ui/ModuloGuard';
 
 export default function DashboardSectionLayout({ children }: { children: ReactNode }) {
   return (
-    <DashboardLayout>
+    <ModuloGuard>
+      <DashboardLayout>
         {children}
-    </DashboardLayout>
+      </DashboardLayout>
+    </ModuloGuard>
   );
 }

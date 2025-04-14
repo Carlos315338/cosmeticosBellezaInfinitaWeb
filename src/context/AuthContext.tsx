@@ -1,7 +1,9 @@
 'use client';
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { UsuarioDTO } from '@/services/usuarios/clienteTypes';
+import { usuarioService } from '@/services/usuarios/usuarioService';
+import { fetchAuthSession } from '@aws-amplify/core';
 
 interface AuthContextType {
   user: UsuarioDTO | null;
@@ -11,8 +13,8 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  setAuthData: () => {},
-  logout: () => {},
+  setAuthData: () => { },
+  logout: () => { },
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -25,6 +27,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     setUser(null);
   };
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+
+        const session = await fetchAuthSession();
+        const payload = session.tokens?.idToken?.payload;
+
+        if (payload && payload["custom:idUser"]) {
+          const usuarioLogueado = await usuarioService.obtenerPorId(payload["custom:idUser"] + "");
+          console.log("user ", usuarioLogueado);
+          setAuthData(usuarioLogueado); 
+        }
+
+      } catch (err) {
+        console.error("Error al recuperar el usuario:", err);
+        logout();
+      }
+    };
+
+    init();
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, setAuthData, logout }}>
