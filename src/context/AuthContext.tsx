@@ -37,7 +37,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
         if (payload && payload["custom:idUser"]) {
           const usuarioLogueado = await usuarioService.obtenerPorId(payload["custom:idUser"] + "");
-          console.log("user ", usuarioLogueado);
           setAuthData(usuarioLogueado); 
         }
 
