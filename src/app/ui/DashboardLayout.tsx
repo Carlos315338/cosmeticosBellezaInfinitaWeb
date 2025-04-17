@@ -12,7 +12,7 @@ interface Props {
 
 export default function DashboardLayout({ children }: Props) {
 
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   return (
     <div className="contenedor">
