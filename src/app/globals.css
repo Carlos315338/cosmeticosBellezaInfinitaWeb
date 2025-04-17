@@ -96,6 +96,19 @@ body {
   width: 500px;
 }
 
+.text-purple {
+  color: #5c0061;
+}
+
+.img-menu-burger {
+  filter: invert(100%) brightness(1000%);
+}
+
+.container-form {
+  background-color: white;
+  border-radius: 16px;
+}
+
 @media (max-width: 500px) {
   .login-box {
     width: 90%; /* Ocupa el 90% del ancho en pantallas pequeñas */
@@ -104,6 +117,36 @@ body {
   img {
     max-width: 15rem; /* Reduce el tamaño de la imagen en pantallas pequeñas */
   }
+}
+
+.container-form {
+  background-color: #f1e6ee;
+  border-radius: 16px;
+}
+
+.footer {
+  background-color: #5c0061;
+  color: white;
+}
+
+.btn-cancel {
+  background-color: #5c0061;
+  color: white;
+}
+
+.btn-cancel:hover {
+  background-color: black;
+  color: white;
+}
+
+.btn-submit {
+  background-color: #ff0072;
+  color: white;
+}
+
+.btn-submit:hover {
+  background-color: black;
+  color: white;
 }
 
 .login-box a {

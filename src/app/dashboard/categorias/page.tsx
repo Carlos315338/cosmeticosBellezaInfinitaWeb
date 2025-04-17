@@ -1,51 +1,85 @@
 // app/dashboard/categorias/page.tsx
-'use client';
+"use client";
+import React, { useState } from "react";
+import CurrentTime from "@/app/ui/CurrentTime";
+import Image from "next/image";
+import ModalCategoria from "@/app/ui/modalCategoria";
+
+// Ajusta la ruta según tu estructura
 
 export default function CategoriasPage() {
-  return (
-      <div className="container">
-        <h1 className="pt-4 pb-3">Categorías de Productos</h1>
+  const [showModal, setShowModal] = useState(false);
 
-        {/* Formulario */}
-        <form className="container-form pe-4 ps-4">
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  return (
+    <div className="container pb-3 register-products">
+      <div className="row">
+        <div className="col-12 d-flex justify-content-end">
+          <CurrentTime />
+        </div>
+      </div>
+      <div className="row g-0 align-items-center text-white rounded mb-3 px-3 py-2 header-customer">
+        <div className="col-md-6 d-flex align-items-center">
+          <Image
+            src="/more.png"
+            className="img-fluid me-2 img-menu-burger "
+            alt="Logo"
+            width={30}
+            height={30}
+          />
+          <h2 className="mb-0">Categorías de Productos</h2>
+        </div>
+      </div>
+
+      {/* Formulario */}
+      <div className="row container-form">
+        <form className="pe-4 ps-4">
           <div className="row mb-3">
             <div className="col-md-12">
-              <label htmlFor="nombre-categoria" className="form-label">Nombre de la Categoría</label>
-              <input type="text" id="nombre-categoria" className="form-control" placeholder="Ingrese el nombre de la categoría" />
+              <label
+                htmlFor="nombre-categoria"
+                className="form-label text-dark"
+              >
+                Nombre de la Categoría
+              </label>
+              <input
+                type="text"
+                id="nombre-categoria"
+                className="form-control"
+                placeholder="Ingrese el nombre de la categoría"
+              />
             </div>
           </div>
 
           <div className="d-flex justify-content-between pb-2 pt-2">
-            <button type="button" className="btn btn-submit me-2">Buscar categoría</button>
+            <button
+              type="button"
+              className="btn btn-submit me-2"
+              onClick={handleOpenModal}
+            >
+              Buscar categoría
+            </button>
             <div className="d-flex justify-content-end">
-              <a href="#" className="btn btn-cancel me-2">Cancelar</a>
-              <button type="submit" className="btn btn-submit">Guardar cambios</button>
+              <a href="#" className="btn btn-cancel me-2">
+                Cancelar
+              </a>
+              <button type="submit" className="btn btn-submit">
+                Guardar cambios
+              </button>
             </div>
           </div>
         </form>
-
-        {/* Tabla */}
-        <div className="table-responsive mt-4">
-          <table className="table table-striped table-hover">
-            <thead className="table-light text-center">
-              <tr>
-                <th>Acción</th>
-                <th>Categoría</th>
-              </tr>
-            </thead>
-            <tbody>
-              {["Maquillaje", "Cuidado de la piel", "Cuidado del cabello", "Perfumería", "Cuidado personal", "Uñas", "Accesorios y herramientas", "Productos naturales"].map((nombre, i) => (
-                <tr key={i}>
-                  <td className="text-center">
-                    <button className="btn btn-sm btn-outline-primary me-1" title="Editar">✏️</button>
-                    <button className="btn btn-sm btn-outline-danger" title="Eliminar">🗑️</button>
-                  </td>
-                  <td className="text-center">{nombre}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
       </div>
+
+      {/* Tabla */}
+      <ModalCategoria show={showModal} onClose={handleCloseModal} />
+    </div>
   );
 }
