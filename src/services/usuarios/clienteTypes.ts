@@ -32,3 +32,9 @@ export interface ModuloDTO {
   id: string;
   nombre: string;
 }
+
+export interface confirmacionPayload {
+  username: string,
+  tempPassword: string,
+  newPassword: string
+};
