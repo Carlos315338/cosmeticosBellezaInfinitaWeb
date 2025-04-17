@@ -36,7 +36,7 @@ export default function ModuloGuard({ children }: { children: React.ReactNode })
     } else {
       setChecking(false);
     }
-  }, [pathname, user]); // asegúrate de incluir `user` como dependencia
+  }, [pathname, user]);
 
   if (checking) {
     return (

@@ -3,13 +3,13 @@ type Ruta = {
     nombre: string;
     ruta: string;
 };
-
-export type Modulo = "dashboard" | "clientes" | "categorias" | "proveedores" | "productos" | "usuarios" | "metodos-pagos" | "ventas" | "cambiar-clave" | "finanzas" | "configuracion";
+//"dashboard" |
+export type Modulo =  "clientes" | "categorias" | "proveedores" | "productos" | "usuarios" | "metodos-pagos" | "ventas" | "cambiar-clave" | "finanzas" | "configuracion";
 
 export const rutasPorModulo: Record<Modulo, Ruta[]> = {
-    dashboard: [
-        { nombre: "Dashboard", ruta: "/dashboard" },
-    ],
+    //dashboard: [
+    //    { nombre: "Dashboard", ruta: "/dashboard" },
+    //],
     clientes: [
         { nombre: "Lista de Clientes", ruta: "/dashboard/clientes/lista" },
         { nombre: "Registrar Clientes", ruta: "/dashboard/clientes/nuevo" },
