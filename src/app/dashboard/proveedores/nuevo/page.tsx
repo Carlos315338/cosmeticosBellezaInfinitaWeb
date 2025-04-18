@@ -1,9 +1,15 @@
 "use client";
+import CurrentTime from "@/app/ui/CurrentTime";
 import Image from "next/image";
 
 export default function ProveedoresNuevoPage() {
   return (
     <div className="container p-2">
+      <div className="row">
+        <div className="col-12 d-flex justify-content-end">
+          <CurrentTime />
+        </div>
+      </div>
       <div className="container pb-3 register-customer">
         {/* <!-- Encabezado --> */}
         <div className="row align-items-center text-white rounded mb-3 px-3 py-2 header-customer">
@@ -18,7 +24,7 @@ export default function ProveedoresNuevoPage() {
             <h2 className="mb-0">Registrar Proveedores</h2>
           </div>
         </div>
-        <form className="container-form pe-4 ps-4">
+        <form className="row container-form me-2 ms-2">
           <div className="row mb-3">
             <div className="col-md-4">
               <label className="form-label">

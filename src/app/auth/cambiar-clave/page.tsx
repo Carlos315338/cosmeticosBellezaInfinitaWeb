@@ -1,86 +1,92 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { useState } from 'react';
+import Image from "next/image";
+import { useState } from "react";
+import { fetchAuthSession } from "@aws-amplify/core";
 
-import { useRouter } from 'next/navigation';
-import { usuarioService } from '@/services/usuarios/usuarioService';
-import { confirmacionPayload } from '@/services/usuarios/clienteTypes';
-import { useAuth } from '@/context/AuthContext';
-import { signIn, signOut } from '@aws-amplify/auth';
+import { useRouter } from "next/navigation";
+import { usuarioService } from "@/services/usuarios/usuarioService";
+import {
+  cambioClaveDTO,
+  confirmacionPayload,
+} from "@/services/usuarios/clienteTypes";
+import { useAuth } from "@/context/AuthContext";
+import { signIn, signOut } from "@aws-amplify/auth";
 
-export default function CambiarClavePage() {
-  const { user } = useAuth();
+export default function CambiarContrasenaPage() {
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const router = useRouter();
-  const { setAuthData, logout } = useAuth();
-
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const { user, logout, setAuthData } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (newPassword !== confirmNewPassword) {
-      alert('Las nuevas contraseñas no coinciden');
+      alert("Las nuevas contraseñas no coinciden");
       return;
     }
 
     try {
+      const session = await fetchAuthSession();
+      const accessToken = session.tokens?.accessToken?.toString();
 
-      if (!user) return;
+      if (!user || !accessToken) return;
 
-      const payload: confirmacionPayload = {
-        username: user.idUsuario,
-        tempPassword: currentPassword,
-        newPassword: newPassword
+      if (user?.esprimeravez) {
+        const payload: confirmacionPayload = {
+          username: user.idUsuario,
+          tempPassword: currentPassword,
+          newPassword: newPassword,
+        };
+
+        await usuarioService.confirmSignIn(payload);
+        await signOut();
+        logout();
+        await signIn({ username: user.idUsuario, password: newPassword });
+        const usuarioLogueado = await usuarioService.obtenerPorId(
+          user.idUsuario
+        );
+        setAuthData(usuarioLogueado);
+      } else {
+        console.log("accessTokena", accessToken);
+        console.log("confirmacion");
+
+        const payload: cambioClaveDTO = {
+          idUser: user.idUsuario,
+          contrasenaActual: currentPassword,
+          contrasenaNueva: newPassword,
+          accessToken: accessToken,
+        };
+
+        await usuarioService.cambiarClave(payload);
       }
 
-      await usuarioService.confirmSignIn(payload);
-      await signOut();
-      logout();
-      await signIn({ username: user.idUsuario, password: newPassword });
-      alert('Contraseña actualizada correctamente');
-      const usuarioLogueado = await usuarioService.obtenerPorId(user.idUsuario);
-      setAuthData(usuarioLogueado);
-      router.push('/dashboard');
+      alert("Contraseña actualizada correctamente");
+      router.push("/dashboard");
     } catch (error: any) {
-      console.error('Error al cambiar la contraseña:', error);
-      
-      switch (error.name) {
-        case 'UserNotFoundException':
-          alert('El usuario no existe');
-          break;
-        case 'NotAuthorizedException':
-          alert('Usuario o contraseña incorrectos');
-          break;
-        case 'UserNotConfirmedException':
-          alert('Debes confirmar tu cuenta antes de iniciar sesión');
-          break;
-        case 'PasswordResetRequiredException':
-          alert('Debes restablecer tu contraseña');
-          break;
-        case 'InvalidPasswordException':
-          alert('La contraseña no cumple con los requisitos');
-          break;
-        case 'TooManyFailedAttemptsException':
-          alert('Demasiados intentos fallidos, intenta más tarde');
-          break;
-        default:
-          alert('Ocurrió un error desconocido: ' + error.message);
-          break;
-      }
+      console.error("Error al cambiar la contraseña:", error);
+      alert(error.message || "No se pudo cambiar la contraseña");
     }
   };
 
   return (
     <main className="forgot-container">
-      <Image src="/logo.png" alt="Logo Belleza Infinita" width={180} height={180} className="forgot-container__logo" />
+      <Image
+        src="/logo.png"
+        alt="Logo Belleza Infinita"
+        width={180}
+        height={180}
+        className="forgot-container__logo"
+      />
 
       <form className="forgot-box" onSubmit={handleSubmit}>
         <h2 className="forgot-box__title">Cambiar contraseña</h2>
 
-        <label htmlFor="currentPassword" className="forgot-box__label">Contraseña actual</label>
+        <label htmlFor="currentPassword" className="forgot-box__label">
+          Contraseña actual
+        </label>
         <input
           type="password"
           id="currentPassword"
@@ -90,7 +96,9 @@ export default function CambiarClavePage() {
           onChange={(e) => setCurrentPassword(e.target.value)}
         />
 
-        <label htmlFor="newPassword" className="forgot-box__label">Nueva contraseña</label>
+        <label htmlFor="newPassword" className="forgot-box__label">
+          Nueva contraseña
+        </label>
         <input
           type="password"
           id="newPassword"
@@ -100,7 +108,9 @@ export default function CambiarClavePage() {
           onChange={(e) => setNewPassword(e.target.value)}
         />
 
-        <label htmlFor="confirmNewPassword" className="forgot-box__label">Vuelva a escribir la nueva contraseña</label>
+        <label htmlFor="confirmNewPassword" className="forgot-box__label">
+          Vuelva a escribir la nueva contraseña
+        </label>
         <input
           type="password"
           id="confirmNewPassword"
@@ -110,13 +120,15 @@ export default function CambiarClavePage() {
           onChange={(e) => setConfirmNewPassword(e.target.value)}
         />
 
-        <section className="forgot-box-section">
-          <a href="/dashboard" className="forgot-box-section__cancel">Cancelar</a>
-          <button type="submit" className="forgot-box-section__button">Guardar cambios</button>
+        <section className="forgot-box-section d-flex justify-content-around pt-3">
+          <a href="/dashboard" className="forgot-box-section__cancel">
+            Cancelar
+          </a>
+          <button type="submit" className="forgot-box-section__button">
+            Guardar cambios
+          </button>
         </section>
       </form>
     </main>
   );
 }
-
-

@@ -7,15 +7,12 @@ export default function ProductosListaPage() {
     <div className="container">
       <div className="row">
         <div className="col-12 d-flex justify-content-end">
+          <div className="col-8 text-start">
+            <h1 className="tittle">Lista de Productos</h1>
+          </div>
           <CurrentTime />
         </div>
       </div>
-      <div className="row mb-3">
-        <div className="col-8 text-start">
-          <h1 className="tittle pt-2 pb-2">Lista de Productos</h1>
-        </div>
-      </div>
-
       <div
         className="rounded shadow-sm p-0 pe-3 ps-3 mb-4"
         style={{ background: "white" }}

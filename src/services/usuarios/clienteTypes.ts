@@ -20,6 +20,7 @@ export interface UsuarioDTO {
   nombreUsuario: string;
   contrasenha: string;
   rol: RolDTO;
+  esprimeravez: boolean ;
 }
 
 export interface RolDTO {
@@ -34,14 +35,14 @@ export interface ModuloDTO {
 }
 
 export interface confirmacionPayload {
-  username: string,
-  tempPassword: string,
-  newPassword: string
-};
+  username: string;
+  tempPassword: string;
+  newPassword: string;
+}
 
-export interface cambioClaveDTO {  
-  idUser: string,
-  contrasenaActual: string,
-  contrasenaNueva: string,
-  accessToken: string
+export interface cambioClaveDTO {
+  idUser: string;
+  contrasenaActual: string;
+  contrasenaNueva: string;
+  accessToken: string;
 }

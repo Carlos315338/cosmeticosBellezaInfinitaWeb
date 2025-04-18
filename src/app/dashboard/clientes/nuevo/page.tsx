@@ -1,9 +1,15 @@
 "use client";
+import CurrentTime from "@/app/ui/CurrentTime";
 import Image from "next/image";
 
 export default function ClientesNuevoPage() {
   return (
     <div className="container p-2">
+      <div className="row">
+        <div className="col-12 d-flex justify-content-end">
+          <CurrentTime />
+        </div>
+      </div>
       <div className="container pb-3 register-customer">
         {/* <!-- Encabezado --> */}
         <div className="row align-items-center text-white rounded mb-3 px-3 py-2 header-customer">
