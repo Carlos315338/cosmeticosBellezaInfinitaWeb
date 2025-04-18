@@ -1,4 +1,3 @@
-// app/dashboard/usuarios/lista/page.tsx
 "use client";
 
 import CurrentTime from "@/app/ui/CurrentTime";
@@ -40,6 +39,7 @@ export default function UsuariosListaPage() {
                 <th>Nombre</th>
                 <th>Apellido</th>
                 <th>Identificación</th>
+                <th>Correo Electrónico</th>
                 <th>Contraseña</th>
                 <th>Rol</th>
               </tr>
@@ -58,6 +58,7 @@ export default function UsuariosListaPage() {
                   <td>Nombre {index + 1}</td>
                   <td>Apellido {index + 1}</td>
                   <td>10000{index}</td>
+                  <td>usuario{index + 1}@ejemplo.com</td>
                   <td>•••••••</td>
                   <td>Administrador</td>
                 </tr>
