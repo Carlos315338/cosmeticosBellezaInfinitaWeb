@@ -36,22 +36,17 @@ export default function CambiarClavePage() {
         newPassword: newPassword
       }
 
-      console.log("confirmacion");
       await usuarioService.confirmSignIn(payload);
-
-      console.log("signOut");
       await signOut();
       logout();
-
       await signIn({ username: user.idUsuario, password: newPassword });
-      console.log("signIn", user.idUsuario, newPassword);
-
       alert('Contraseña actualizada correctamente');
       const usuarioLogueado = await usuarioService.obtenerPorId(user.idUsuario);
       setAuthData(usuarioLogueado);
       router.push('/dashboard');
     } catch (error: any) {
       console.error('Error al cambiar la contraseña:', error);
+      
       switch (error.name) {
         case 'UserNotFoundException':
           alert('El usuario no existe');
