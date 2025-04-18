@@ -2,15 +2,19 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { updatePassword } from 'aws-amplify/auth';
+import { fetchAuthSession } from '@aws-amplify/core';
 
 import { useRouter } from 'next/navigation';
+import { usuarioService } from '@/services/usuarios/usuarioService';
+import { cambioClaveDTO } from '@/services/usuarios/clienteTypes';
+import { useAuth } from '@/context/AuthContext';
 
 export default function CambiarContrasenaPage() {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const router = useRouter();
+  const { user } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,10 +26,22 @@ export default function CambiarContrasenaPage() {
 
     try {
 
-      await updatePassword({
-        oldPassword: currentPassword,
-        newPassword,
-      });
+      const session = await fetchAuthSession();
+      const accessToken = session.tokens?.accessToken?.toString();
+
+      if(!user || !accessToken) return;
+
+      console.log("accessTokena", accessToken);
+      console.log("confirmacion");
+
+      const payload : cambioClaveDTO = {  
+        idUser: user.idUsuario,
+        contrasenaActual: currentPassword,
+        contrasenaNueva: newPassword,
+        accessToken: accessToken
+      }
+
+      await usuarioService.cambiarClave(payload);
 
       alert('Contraseña actualizada correctamente');
       router.push('/dashboard');
