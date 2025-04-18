@@ -120,7 +120,7 @@ export default function CambiarContrasenaPage() {
           onChange={(e) => setConfirmNewPassword(e.target.value)}
         />
 
-        <section className="forgot-box-section">
+        <section className="forgot-box-section d-flex justify-content-around pt-3">
           <a href="/dashboard" className="forgot-box-section__cancel">
             Cancelar
           </a>
