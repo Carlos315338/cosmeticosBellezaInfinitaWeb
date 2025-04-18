@@ -7,12 +7,10 @@ export default function ProveedoresListaPage() {
     <div className="container">
       <div className="row">
         <div className="col-12 d-flex justify-content-end">
+          <div className="col-8 text-start">
+            <h1 className="tittle">Lista de Proveedores</h1>
+          </div>
           <CurrentTime />
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-8 text-start">
-          <h1 className="tittle pt-4 pb-2">Lista de Proveedores</h1>
         </div>
       </div>
       <div
