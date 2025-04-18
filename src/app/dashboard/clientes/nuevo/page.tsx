@@ -4,6 +4,7 @@ import Image from "next/image";
 export default function ClientesNuevoPage() {
   return (
     <div className="container p-2">
+      
       <div className="container pb-3 register-customer">
         {/* <!-- Encabezado --> */}
         <div className="row align-items-center text-white rounded mb-3 px-3 py-2 header-customer">
@@ -21,7 +22,7 @@ export default function ClientesNuevoPage() {
 
         {/*<!-- Formulario -->*/}
         <form className="container-form pe-4 ps-4">
-          <div className="row mb-3">
+          <div className="row">
             <div className="col-md-4">
               <label className="form-label">Primer Nombre</label>
               <input type="text" className="form-control" />
@@ -50,7 +51,7 @@ export default function ClientesNuevoPage() {
             </div>
           </div>
           <p className="form-label">Dirección</p>
-          <div className="row mb-3">
+          <div className="row">
             <div className="col-md-2">
               <label className="form-label">Tipo de vía</label>
               <input type="text" className="form-control" />
@@ -76,7 +77,7 @@ export default function ClientesNuevoPage() {
               <input type="text" className="form-control" />
             </div>
           </div>
-          <div className="row mb-3">
+          <div className="row">
             <div className="col-md-4">
               <label className="form-label">Ciudad</label>
               <input type="text" className="form-control" />

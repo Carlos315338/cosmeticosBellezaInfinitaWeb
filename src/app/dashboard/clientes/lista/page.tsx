@@ -12,7 +12,7 @@ export default function ClientesListaPage() {
       </div>
       <div className="row mb-3">
         <div className="col-8 text-start">
-          <h1 className="clients__title pt-2 pb-2">Lista de Clientes</h1>
+          <h1 className="tittle pt-2 pb-2">Lista de Clientes</h1>
         </div>
       </div>
 
