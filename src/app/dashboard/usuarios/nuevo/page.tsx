@@ -11,12 +11,12 @@ export default function UsuariosNuevoPage() {
         </div>
       </div>
       <div className="container pb-3 register-customer">
-        {/* <!-- Encabezado --> */}
+        {/* Encabezado */}
         <div className="row align-items-center text-white rounded mb-3 px-3 py-2 header-customer">
           <div className="col-md-6 d-flex align-items-center">
             <Image
               src="/more.png"
-              className="img-fluid me-2 img-menu-burger "
+              className="img-fluid me-2 img-menu-burger"
               alt="Logo"
               width={30}
               height={30}
@@ -25,6 +25,7 @@ export default function UsuariosNuevoPage() {
           </div>
         </div>
         <form className="row container-form ms-2 me-2 pb-5">
+          {/* Información personal */}
           <div className="row mb-3">
             <div className="col-md-4">
               <label className="form-label">Nombre del usuario</label>
@@ -51,6 +52,7 @@ export default function UsuariosNuevoPage() {
               />
             </div>
           </div>
+          {/* Contacto */}
           <div className="row mb-3">
             <div className="col-md-4">
               <label className="form-label">Fecha de nacimiento</label>
@@ -65,6 +67,17 @@ export default function UsuariosNuevoPage() {
               />
             </div>
             <div className="col-md-4">
+              <label className="form-label">Correo Electrónico</label>
+              <input
+                type="email"
+                className="form-control"
+                placeholder="Ingrese su correo electrónico"
+              />
+            </div>
+          </div>
+          {/* Seguridad */}
+          <div className="row mb-3">
+            <div className="col-md-4">
               <label className="form-label">Rol</label>
               <input
                 type="text"
@@ -72,8 +85,6 @@ export default function UsuariosNuevoPage() {
                 placeholder="Ingrese el rol"
               />
             </div>
-          </div>
-          <div className="row mb-3">
             <div className="col-md-4">
               <label className="form-label">Contraseña</label>
               <input
@@ -91,6 +102,7 @@ export default function UsuariosNuevoPage() {
               />
             </div>
           </div>
+          {/* Acciones */}
           <div className="d-flex justify-content-end gap-2">
             <a href="#" className="btn btn-cancel">
               Cancelar

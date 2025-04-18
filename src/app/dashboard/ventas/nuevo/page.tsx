@@ -3,16 +3,18 @@ import React, { useState } from "react";
 import CurrentTime from "@/app/ui/CurrentTime";
 import Image from "next/image";
 import ModalProductos from "@/app/ui/modalProductos";
+import ModalProductosVenta from "@/app/ui/modalProductosVenta"; // Asegúrate de importar correctamente este componente
 
 export default function VentasNuevoPage() {
+  const [activeModal, setActiveModal] = useState(null);
 
-  const [showModal, setShowModal] = useState(false);
-    const handleOpenModal = () => {
-      setShowModal(true);
-    };
-    const handleCloseModal = () => {
-      setShowModal(false);
-    };
+  const handleOpenModal = (modal) => {
+    setActiveModal(modal);
+  };
+  const handleCloseModal = () => {
+    setActiveModal(null);
+  };
+
   return (
     <div className="container">
       <div className="row rounded-2 mx-2 my-2">
@@ -32,7 +34,7 @@ export default function VentasNuevoPage() {
                     alt="Logo"
                     width={30}
                     height={30}
-                    className="img-fluid me-2 img-menu-burger "
+                    className="img-fluid me-2 img-menu-burger"
                   />
                   <h2 className="mb-0">Registrar Ventas</h2>
                 </div>
@@ -73,42 +75,23 @@ export default function VentasNuevoPage() {
             </div>
           </div>
           <div className="row mt-3">
-            <div className="col-12">
-              <button type="button" className="btn btn-submit w-100" onClick={handleOpenModal}>
+            <div className="col-6">
+              <button
+                type="button"
+                className="btn btn-submit w-100"
+                onClick={() => handleOpenModal("productos")}
+              >
                 Buscar productos
               </button>
             </div>
-          </div>
-          <div className="row mt-3">
-            <div className="col-12">
-              <div className="table-responsive">
-                <table className="table table-bordered table-hover">
-                  <thead className="table-light text-center">
-                    <tr>
-                      <th>Código</th>
-                      <th>Producto</th>
-                      <th>Descripción</th>
-                      <th>Precio</th>
-                      <th>Cantidad</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="text-center">
-                        <button className="btn btn-outline-danger btn-sm">
-                          🗑️
-                        </button>
-                      </td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td className="text-center">
-                        <input type="number" className="form-control" />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+            <div className="col-6">
+              <button
+                type="button"
+                className="btn btn-cancel w-100"
+                onClick={() => handleOpenModal("productosVenta")}
+              >
+                Lista de Productos Registrados
+              </button>
             </div>
           </div>
           <div className="row mt-3">
@@ -152,7 +135,13 @@ export default function VentasNuevoPage() {
           </div>
         </div>
       </div>
-      <ModalProductos show={showModal} onClose={handleCloseModal} />
+      {/* Modales */}
+      {activeModal === "productos" && (
+        <ModalProductos show={true} onClose={handleCloseModal} />
+      )}
+      {activeModal === "productosVenta" && (
+        <ModalProductosVenta show={true} onClose={handleCloseModal} />
+      )}
     </div>
   );
 }
