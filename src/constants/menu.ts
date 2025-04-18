@@ -1,7 +1,6 @@
-
 type Ruta = {
-    nombre: string;
-    ruta: string;
+  nombre: string;
+  ruta: string;
 };
 
 export type Modulo =  "dashboard" | "clientes" | "categorias" | "proveedores" | "productos" | "usuarios" | "metodos-pagos" | "ventas" | "cambiar-clave" | "finanzas" | "configuracion";

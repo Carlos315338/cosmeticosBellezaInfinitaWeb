@@ -17,7 +17,7 @@ export default function DashboardLayout({ children }: Props) {
   return (
     <div className="contenedor">
       <div className="row">
-        <Header userName={user?.nombreUsuario ?? 'Usuario'} />
+        <Header userName={user?.nombreUsuario ?? "Usuario"} />
       </div>
       <div className="row">
         <div className="col-md-2 col-sm-12 g-0">
@@ -25,7 +25,7 @@ export default function DashboardLayout({ children }: Props) {
         </div>
         <div className="col-md-10 col-sm-12">{children}</div>
       </div>
-      <div className="row">
+      <div className="row footer">
         <Footer />
       </div>
     </div>

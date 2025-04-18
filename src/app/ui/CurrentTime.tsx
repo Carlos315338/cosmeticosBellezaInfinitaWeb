@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
-import TimeDisplay from "./TimeDisplay";
+import { useState, useEffect, FC } from "react";
 
-const CurrentTime = () => {
-  const [currentTime, setCurrentTime] = useState("");
+interface CurrentTimeProps {
+  config?: object; // Acepta cualquier objeto, pero no tipos primitivos.
+}
+
+const CurrentTime: FC<CurrentTimeProps> = () => {
+  const [currentTime, setCurrentTime] = useState<string>("");
 
   useEffect(() => {
     const updateTime = () => {
@@ -26,10 +29,19 @@ const CurrentTime = () => {
   }, []);
 
   return (
-    <div className="text-end">
-      <TimeDisplay />
+    <div className="col-4 text-end text-purple">
+      {/* Asegúrate de implementar y exportar TimeDisplay */}
+      <TimeDisplay currentTime={currentTime} />
     </div>
   );
 };
+
+interface TimeDisplayProps {
+  currentTime: string;
+}
+
+const TimeDisplay: FC<TimeDisplayProps> = ({ currentTime }) => (
+  <p>{currentTime}</p>
+);
 
 export default CurrentTime;
