@@ -1,9 +1,18 @@
 "use client";
-
+import React, { useState } from "react";
 import CurrentTime from "@/app/ui/CurrentTime";
 import Image from "next/image";
+import ModalProductos from "@/app/ui/modalProductos";
 
 export default function VentasNuevoPage() {
+
+  const [showModal, setShowModal] = useState(false);
+    const handleOpenModal = () => {
+      setShowModal(true);
+    };
+    const handleCloseModal = () => {
+      setShowModal(false);
+    };
   return (
     <div className="container">
       <div className="row rounded-2 mx-2 my-2">
@@ -23,7 +32,7 @@ export default function VentasNuevoPage() {
                     alt="Logo"
                     width={30}
                     height={30}
-                    className="img-fluid me-2"
+                    className="img-fluid me-2 img-menu-burger "
                   />
                   <h2 className="mb-0">Registrar Ventas</h2>
                 </div>
@@ -65,7 +74,7 @@ export default function VentasNuevoPage() {
           </div>
           <div className="row mt-3">
             <div className="col-12">
-              <button type="button" className="btn btn-submit w-100">
+              <button type="button" className="btn btn-submit w-100" onClick={handleOpenModal}>
                 Buscar productos
               </button>
             </div>
@@ -143,6 +152,7 @@ export default function VentasNuevoPage() {
           </div>
         </div>
       </div>
+      <ModalProductos show={showModal} onClose={handleCloseModal} />
     </div>
   );
 }
