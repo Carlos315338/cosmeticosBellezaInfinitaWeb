@@ -1,8 +1,6 @@
 // app/dashboard/metodos-pago/page.tsx
 'use client';
 
-import DashboardLayout from '@/app/ui/DashboardLayout';
-
 export default function MetodosPagoPage() {
   return (
     
