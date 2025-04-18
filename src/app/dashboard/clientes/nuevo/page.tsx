@@ -1,13 +1,26 @@
-'use client';
-
-import DashboardLayout from '@/app/ui/DashboardLayout';
+"use client";
+import Image from "next/image";
 
 export default function ClientesNuevoPage() {
   return (
-    
-      <div className="container">
-        <h1 className="pt-4 pb-3">Registrar Cliente</h1>
-        <form className="container-form pb-5">
+    <div className="container p-2">
+      <div className="container pb-3 register-customer">
+        {/* <!-- Encabezado --> */}
+        <div className="row align-items-center text-white rounded mb-3 px-3 py-2 header-customer">
+          <div className="col-md-6 d-flex align-items-center">
+            <Image
+              src="/more.png"
+              className="img-fluid me-2 img-menu-burger "
+              alt="Logo"
+              width={30}
+              height={30}
+            />
+            <h2 className="mb-0">Registrar Cliente</h2>
+          </div>
+        </div>
+
+        {/*<!-- Formulario -->*/}
+        <form className="container-form pe-4 ps-4">
           <div className="row mb-3">
             <div className="col-md-4">
               <label className="form-label">Primer Nombre</label>
@@ -22,8 +35,7 @@ export default function ClientesNuevoPage() {
               <input type="text" className="form-control" />
             </div>
           </div>
-
-          <div className="row mb-3">
+          <div className="row">
             <div className="col-md-4">
               <label className="form-label">Segundo Apellido</label>
               <input type="text" className="form-control" />
@@ -37,8 +49,7 @@ export default function ClientesNuevoPage() {
               <input type="email" className="form-control" />
             </div>
           </div>
-
-          <p>Dirección</p>
+          <p className="form-label">Dirección</p>
           <div className="row mb-3">
             <div className="col-md-2">
               <label className="form-label">Tipo de vía</label>
@@ -65,7 +76,6 @@ export default function ClientesNuevoPage() {
               <input type="text" className="form-control" />
             </div>
           </div>
-
           <div className="row mb-3">
             <div className="col-md-4">
               <label className="form-label">Ciudad</label>
@@ -89,12 +99,16 @@ export default function ClientesNuevoPage() {
             </div>
           </div>
 
-          <div className="d-flex justify-content-end gap-2">
-            <a href="#" className="btn btn-cancel">Cancelar</a>
-            <button type="submit" className="btn btn-submit">Guardar cambios</button>
+          <div className="d-flex justify-content-end pb-2 pt-2 ">
+            <a href="#" className="btn btn-cancel me-2">
+              Cancelar
+            </a>
+            <button type="submit" className="btn btn-submit">
+              Guardar cambios
+            </button>
           </div>
         </form>
       </div>
-    
+    </div>
   );
 }

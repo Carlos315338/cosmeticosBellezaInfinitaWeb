@@ -161,6 +161,9 @@ form {
 .forgot-box__title {
   color: white;
 }
+.form-label {
+  color: black;
+}
 
 label {
   color: white;
