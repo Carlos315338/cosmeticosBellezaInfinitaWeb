@@ -29,12 +29,15 @@ export default function LoginPage() {
       const user = await signIn({ username: idNumber, password });
 
       const usuarioLogueado = await usuarioService.obtenerPorId(idNumber);
-      setAuthData(usuarioLogueado);
 
       if(user.nextStep.signInStep==="CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED"){
+        usuarioLogueado.esprimeravez = true;
+        setAuthData(usuarioLogueado);
         router.push('/auth/cambiar-clave');
         return; 
       }
+      
+      setAuthData(usuarioLogueado);
       
       router.push('/dashboard');
     } catch (error) {
