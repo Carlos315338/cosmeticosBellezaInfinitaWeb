@@ -9,15 +9,12 @@ import ModalCategoria from "@/app/ui/modalCategoria";
 
 export default function CategoriasPage() {
   const [showModal, setShowModal] = useState(false);
-
   const handleOpenModal = () => {
     setShowModal(true);
   };
-
   const handleCloseModal = () => {
     setShowModal(false);
   };
-
   return (
     <div className="container pb-3 register-products">
       <div className="row">
