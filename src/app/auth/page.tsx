@@ -26,11 +26,17 @@ export default function LoginPage() {
     }
 
     try {
-      //const user = await Auth.signIn(idNumber, password);
-      await signIn({ username: idNumber, password });
+      const user = await signIn({ username: idNumber, password });
+
       const usuarioLogueado = await usuarioService.obtenerPorId(idNumber);
       setAuthData(usuarioLogueado);
-      router.push("/dashboard");
+
+      if(user.nextStep.signInStep==="CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED"){
+        router.push('/auth/cambiar-clave');
+        return; 
+      }
+      
+      router.push('/dashboard');
     } catch (error) {
       console.error("Error de login", error);
       alert("Credenciales inválidas");
