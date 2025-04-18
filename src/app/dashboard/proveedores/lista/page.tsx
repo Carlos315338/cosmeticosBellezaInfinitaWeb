@@ -65,6 +65,39 @@ export default function ProveedoresListaPage() {
             </table>
           </div>
         </div>
+        <div className="row">
+          <div className="col-auto col-sm-12 col-md-6 col-xl-8 align-content-center">
+            <button className="btn btn-submit">Agregar Proveedores</button>
+          </div>
+
+          <div className="col-auto col-sm-12 col-md-6 col-xl-4 align-content-center text-center">
+            <nav aria-label="...">
+              <ul className="pagination">
+                <li className="page-item disabled">
+                  <span className="page-link">Anteriores</span>
+                </li>
+                <li className="page-item">
+                  <a className="page-link" href="#">
+                    1
+                  </a>
+                </li>
+                <li className="page-item active" aria-current="page">
+                  <span className="page-link">2</span>
+                </li>
+                <li className="page-item">
+                  <a className="page-link" href="#">
+                    3
+                  </a>
+                </li>
+                <li className="page-item">
+                  <a className="page-link" href="#">
+                    Siguiente
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
       </div>
     </div>
   );

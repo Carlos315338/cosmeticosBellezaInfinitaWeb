@@ -18,7 +18,7 @@ export default function ProveedoresNuevoPage() {
             <h2 className="mb-0">Registrar Proveedores</h2>
           </div>
         </div>
-        <form className="row container-form ms-2 me-2 pb-5">
+        <form className="container-form pe-4 ps-4">
           <div className="row mb-3">
             <div className="col-md-4">
               <label className="form-label">

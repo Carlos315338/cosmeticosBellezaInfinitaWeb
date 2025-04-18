@@ -113,6 +113,9 @@ body {
   .login-box {
     width: 90%; /* Ocupa el 90% del ancho en pantallas pequeñas */
   }
+  .forgot-box {
+    width: 90%; /* Ocupa el 90% del ancho en pantallas pequeñas */
+  }
 
   img {
     max-width: 15rem; /* Reduce el tamaño de la imagen en pantallas pequeñas */
@@ -357,6 +360,47 @@ li {
 
 .card {
   border-radius: 16px !important;
+}
+
+.forgot-container__logo {
+  max-width: 15rem;
+  height: auto;
+  display: block;
+}
+.forgot-container {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.forgot-box {
+  background-color: #5c0061;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  box-shadow: 0rem 0.5rem 1rem rgba(0, 0, 0, 0.8);
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+}
+.forgot-box__title {
+  text-align: center;
+  color: white;
+}
+.forgot-box-section {
+  text-align: center;
+}
+
+.forgot-box-section__button {
+  background-color: #ff0072;
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 /* Sección de Clientes */
