@@ -1,26 +1,39 @@
 "use client";
 import CurrentTime from "@/app/ui/CurrentTime";
 import { productoService } from "@/services/productos/productoServices";
-import { ProveedorSelectDTO } from "@/services/productos/productoTypes";
+import { CategoriaSelectDTO, ProveedorSelectDTO } from "@/services/productos/productoTypes";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function ProductosNuevoPage() {
 
   const [proveedores, setProveedores] = useState<ProveedorSelectDTO[]>([]);
+  const [categorias, setCategorias] = useState<CategoriaSelectDTO[]>([]);
   const [proveedorSeleccionado, setProveedorSeleccionado] = useState<string>("");
+  const [categoriaSeleccionado, setCategoriaSeleccionado] = useState<string>("");
 
   useEffect(() => {
     const cargarProveedores = async () => {
       try {
-        const res = await productoService.obtenerListaSelect();
+        const res = await productoService.obtenerProveedorListaSelect();
         setProveedores(res);
       } catch (error) {
         console.error("Error cargando proveedores", error);
       }
     };
 
+    const cargarCategorias = async () => {
+      try {
+        const res = await productoService.obtenerCategoriaListaSelect();
+        setCategorias(res);
+      } catch (error) {
+        console.error("Error cargando proveedores", error);
+      }
+    };
+
     cargarProveedores();
+    cargarCategorias();
+
   }, []);
 
   return (
@@ -62,8 +75,13 @@ export default function ProductosNuevoPage() {
           <div className="row mb-3">
             <div className="col-md-4">
               <label className="form-label">Categoría</label>
-              <select className="form-select">
-                <option value="">Seleccione una Categoría</option>
+              <select id="categoria" className="form-select" value={categoriaSeleccionado} onChange={(e) => setCategoriaSeleccionado(e.target.value)}>
+                <option value="">Seleccione un Categoría</option>
+                {categorias.map((prov) => (
+                  <option key={prov.idCategoria} value={prov.idCategoria}>
+                    {prov.nombreCategoria}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="col-md-4">

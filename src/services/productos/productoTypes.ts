@@ -51,3 +51,8 @@ export interface ProveedorSelectDTO {
   nombreProveedor: string;
 }
 
+export interface CategoriaSelectDTO {
+  idCategoria	: string;
+  nombreCategoria	: string;
+}
+
