@@ -8,7 +8,7 @@ import Image from "next/image";
 export default function ReporteVentasPage() {
   const cardRef = useRef<HTMLDivElement>(null);
 
-  const handleExportToTxt = () => {
+  const exportarATxt = () => {
     if (cardRef.current) {
       // Obtén el contenido HTML
       const printContents = cardRef.current.innerText; // Inner text extrae solo el texto visible
@@ -143,7 +143,7 @@ export default function ReporteVentasPage() {
           </table>
         </div>
         <div className="text-center mt-4 mb-4">
-          <button className="btn btn-submit" onClick={handleExportToTxt}>
+          <button className="btn btn-submit" onClick={exportarATxt}>
             Imprimir Reporte
           </button>
         </div>
