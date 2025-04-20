@@ -23,8 +23,6 @@ export default function ReporteVentasPage() {
 
       // Simula el clic para descargar
       link.click();
-
-      // Limpia el objeto URL
       URL.revokeObjectURL(link.href);
     }
   };
