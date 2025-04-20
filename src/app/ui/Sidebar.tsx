@@ -13,7 +13,7 @@ export default function Sidebar() {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
 
-  const modulos = user?.rol.modulos.map((mod) => mod.nombre) || [];
+  const modulos = user?.rol.modulos.filter((item) => item.nombre != "dashboard" ).map((mod) => mod.nombre) || [];
   
   return (
     <nav className="nav text-decoration-none">

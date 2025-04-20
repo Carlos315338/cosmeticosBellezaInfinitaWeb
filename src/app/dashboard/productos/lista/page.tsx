@@ -1,8 +1,33 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import CurrentTime from "@/app/ui/CurrentTime";
+import { productoService } from "@/services/productos/productoServices";
+import { ProductoDTO } from "@/services/productos/productoTypes";
 
 export default function ProductosListaPage() {
+  
+  const [productos, setProductos] = useState<ProductoDTO[]>([]);
+  const [paginaActual, setPaginaActual] = useState(0);
+  const [totalPaginas, setTotalPaginas] = useState(1);
+
+  useEffect(() => {
+    cargarProductos(paginaActual);
+  }, [paginaActual]);
+
+  const cargarProductos = async (page: number) => {
+    const res = await productoService.obtenerProductos(page, 5, "idProducto");
+    setProductos(res.content);
+    setTotalPaginas(res.totalPages);
+
+  };
+
+  const cambiarPagina = (nuevaPagina: number) => {
+    if (nuevaPagina >= 0 && nuevaPagina < totalPaginas) {
+      setPaginaActual(nuevaPagina);
+    }
+  };
+
   return (
     <div className="container">
       <div className="row">
@@ -13,25 +38,14 @@ export default function ProductosListaPage() {
           <CurrentTime />
         </div>
       </div>
-      <div
-        className="rounded shadow-sm p-0 pe-3 ps-3 mb-4"
-        style={{ background: "white" }}
-      >
-        {/* Barra de búsqueda */}
+      <div className="rounded shadow-sm p-0 pe-3 ps-3 mb-4" style={{ background: "white" }}>
         <div className="row align-items-center text-white rounded mb-3 px-3 py-2 header-customer">
-          <div className="col-sm-8 col-md-6 d-flex align-items-center">
-            {/* Puedes agregar un ícono o título aquí */}
-          </div>
+          <div className="col-sm-8 col-md-6 d-flex align-items-center"></div>
           <div className="col-sm-4 col-md-6 d-flex align-items-center justify-content-end">
-            <input
-              type="text"
-              className="form-control w-50 mb-0"
-              placeholder="Buscar"
-            />
+            <input type="text" className="form-control w-50 mb-0" placeholder="Buscar" />
           </div>
         </div>
 
-        {/* Tabla */}
         <div className="table-responsive">
           <table className="table table-bordered table-hover">
             <thead className="table-light text-center">
@@ -47,56 +61,42 @@ export default function ProductosListaPage() {
               </tr>
             </thead>
             <tbody>
-              {Array.from({ length: 5 }).map((_, index) => (
-                <tr key={index}>
+              {productos.map((producto) => (
+                <tr key={producto.idProducto}>
                   <td className="text-center">
-                    <button className="btn btn-sm btn-outline-primary me-1">
-                      ✏️
-                    </button>
-                    <button className="btn btn-sm btn-outline-danger">
-                      🗑️
-                    </button>
+                    <button className="btn btn-sm btn-outline-primary me-1">✏️</button>
+                    <button className="btn btn-sm btn-outline-danger">🗑️</button>
                   </td>
-                  <td>{1000 + index}</td>
-                  <td>Producto {index + 1}</td>
-                  <td>Descripción {index + 1}</td>
-                  <td>$ {10000 + index * 500}</td>
-                  <td>{20 + index}</td>
-                  <td>Categoría {index + 1}</td>
-                  <td>Proveedor {index + 1}</td>
+                  <td>{producto.codigoDeBarras}</td>
+                  <td>{producto.nombre}</td>
+                  <td>{producto.descripcion}</td>
+                  <td>$ {producto.precio}</td>
+                  <td>{producto.stock}</td>
+                  <td>{producto.categoria.nombreCategoria}</td>
+                  <td>{producto.proveedor.nombreProveedor}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+
         <div className="row">
           <div className="col-auto col-sm-12 col-md-6 col-xl-8 align-content-center">
-            <button className="btn btn-submit">Agregar Productos </button>
+            <button className="btn btn-submit">Agregar Productos</button>
           </div>
-
           <div className="col-auto col-sm-12 col-md-6 col-xl-4 align-content-center text-center">
-            <nav aria-label="...">
-              <ul className="pagination">
-                <li className="page-item disabled">
-                  <span className="page-link">Anteriores</span>
+            <nav aria-label="Paginación">
+              <ul className="pagination justify-content-center">
+                <li className={`page-item ${paginaActual === 0 ? "disabled" : ""}`}>
+                  <button className="page-link" onClick={() => cambiarPagina(paginaActual - 1)}>Anterior</button>
                 </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
-                    1
-                  </a>
-                </li>
-                <li className="page-item active" aria-current="page">
-                  <span className="page-link">2</span>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
-                    3
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
-                    Siguiente
-                  </a>
+                {Array.from({ length: totalPaginas }).map((_, i) => (
+                  <li key={i} className={`page-item ${i === paginaActual ? "active" : ""}`}>
+                    <button className="page-link" onClick={() => cambiarPagina(i)}>{i + 1}</button>
+                  </li>
+                ))}
+                <li className={`page-item ${paginaActual + 1 >= totalPaginas ? "disabled" : ""}`}>
+                  <button className="page-link" onClick={() => cambiarPagina(paginaActual + 1)}>Siguiente</button>
                 </li>
               </ul>
             </nav>

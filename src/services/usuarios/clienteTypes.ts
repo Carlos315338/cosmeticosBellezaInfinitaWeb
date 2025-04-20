@@ -18,9 +18,9 @@ export interface CrearClienteDTO {
 export interface UsuarioDTO {
   idUsuario: string;
   nombreUsuario: string;
-  contrasenha: string;
+  contrasenha?: string;
   rol: RolDTO;
-  esprimeravez: boolean ;
+  esprimeravez?: boolean ;
 }
 
 export interface RolDTO {
