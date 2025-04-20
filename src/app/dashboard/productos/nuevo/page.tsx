@@ -1,8 +1,28 @@
 "use client";
 import CurrentTime from "@/app/ui/CurrentTime";
+import { productoService } from "@/services/productos/productoServices";
+import { ProveedorSelectDTO } from "@/services/productos/productoTypes";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export default function ProductosNuevoPage() {
+
+  const [proveedores, setProveedores] = useState<ProveedorSelectDTO[]>([]);
+  const [proveedorSeleccionado, setProveedorSeleccionado] = useState<string>("");
+
+  useEffect(() => {
+    const cargarProveedores = async () => {
+      try {
+        const res = await productoService.obtenerListaSelect();
+        setProveedores(res);
+      } catch (error) {
+        console.error("Error cargando proveedores", error);
+      }
+    };
+
+    cargarProveedores();
+  }, []);
+
   return (
     <div className="container">
       <div className="row">
@@ -78,8 +98,13 @@ export default function ProductosNuevoPage() {
             </div>
             <div className="col-md-4">
               <label className="form-label">Proveedor</label>
-              <select className="form-select">
-                <option value="">Seleccione un Proveedor</option>
+              <select id="proveedor" className="form-select" value={proveedorSeleccionado} onChange={(e) => setProveedorSeleccionado(e.target.value)}>
+                <option value="">Seleccione un proveedor</option>
+                {proveedores.map((prov) => (
+                  <option key={prov.idProveedor} value={prov.idProveedor}>
+                    {prov.nombreProveedor}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="col-md-4">

@@ -1,5 +1,5 @@
 import api from '../api';
-import { ProductoPaginadoResponse } from './productoTypes';
+import { ProductoPaginadoResponse, ProveedorSelectDTO } from './productoTypes';
 
 export const productoService = {
 
@@ -8,4 +8,9 @@ export const productoService = {
     return res.data.data;
   },
 
+  obtenerListaSelect: async (): Promise<ProveedorSelectDTO[]> => {
+    const res = await api.get("/proveedor/proveedorSelect");
+    return res.data.data;
+  }
+  
 };
