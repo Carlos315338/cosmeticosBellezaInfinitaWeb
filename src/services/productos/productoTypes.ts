@@ -22,29 +22,6 @@ export interface ProductoDTO {
   proveedor: ProveedorDTO;
 }
 
-export interface ProductoPaginadoResponse {
-  content: ProductoDTO[];
-  pageable: {
-    pageNumber: number;
-    pageSize: number;
-    offset: number;
-    paged: boolean;
-    unpaged: boolean;
-  };
-  last: boolean;
-  totalElements: number;
-  totalPages: number;
-  size: number;
-  number: number;
-  sort: {
-    sorted: boolean;
-    unsorted: boolean;
-    empty: boolean;
-  };
-  first: boolean;
-  numberOfElements: number;
-  empty: boolean;
-};
 
 export interface ProveedorSelectDTO {
   idProveedor: string;

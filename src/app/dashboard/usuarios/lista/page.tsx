@@ -1,8 +1,34 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import CurrentTime from "@/app/ui/CurrentTime";
+import { usuarioService } from "@/services/usuarios/usuarioService";
+import { UsuarioDTO } from "@/services/usuarios/clienteTypes";
 
 export default function UsuariosListaPage() {
+  const [usuarios, setUsuarios] = useState<UsuarioDTO[]>([]);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+
+  useEffect(() => {
+    obtenerUsuariosPaginado();
+  }, [page]);
+
+    const obtenerUsuariosPaginado = async () => {
+      const res = await usuarioService.obtenerUsuarios(page, 5);
+      setUsuarios(res.content);
+      setTotalPages(res.totalPages);
+    };
+
+  const getPageNumbers = () => {
+    const maxVisible = 5;
+    const half = Math.floor(maxVisible / 2);
+    let start = Math.max(0, page - half);
+    let end = Math.min(totalPages, start + maxVisible);
+    if (end - start < maxVisible) start = Math.max(0, end - maxVisible);
+    return Array.from({ length: end - start }, (_, i) => start + i);
+  };
+
   return (
     <div className="container">
       <div className="row">
@@ -13,54 +39,41 @@ export default function UsuariosListaPage() {
           <CurrentTime />
         </div>
       </div>
-      <div
-        className="rounded shadow-sm p-0 pe-3 ps-3 mb-4"
-        style={{ background: "white" }}
-      >
-        {/* Barra de búsqueda */}
+
+      <div className="rounded shadow-sm p-0 pe-3 ps-3 mb-4" style={{ background: "white" }}>
         <div className="row align-items-center text-white rounded mb-3 px-3 py-2 header-customer">
-          <div className="col-sm-8 col-md-6 d-flex align-items-center">
-            {/* Puedes agregar un ícono o título aquí */}
-          </div>
+          <div className="col-sm-8 col-md-6 d-flex align-items-center"></div>
           <div className="col-sm-4 col-md-6 d-flex align-items-center justify-content-end">
-            <input
-              type="text"
-              className="form-control w-50 mb-0"
-              placeholder="Buscar"
-            />
+            <input type="text" className="form-control w-50 mb-0" placeholder="Buscar" />
           </div>
         </div>
-        {/* Tabla */}
+
         <div className="table-responsive">
           <table className="table table-bordered table-hover">
             <thead className="table-light text-center">
               <tr>
                 <th>Acción</th>
                 <th>Nombre</th>
-                <th>Apellido</th>
+                { /** <th>Apellido</th> **/}
                 <th>Identificación</th>
-                <th>Correo Electrónico</th>
+                { /** <th>Correo Electrónico</th> **/}
                 <th>Contraseña</th>
                 <th>Rol</th>
               </tr>
             </thead>
             <tbody>
-              {Array.from({ length: 5 }).map((_, index) => (
-                <tr key={index}>
+              {usuarios.map((usuario) => (
+                <tr key={usuario.idUsuario}>
                   <td className="text-center">
-                    <button className="btn btn-sm btn-outline-primary me-1">
-                      ✏️
-                    </button>
-                    <button className="btn btn-sm btn-outline-danger">
-                      🗑️
-                    </button>
+                    <button className="btn btn-sm btn-outline-primary me-1">✏️</button>
+                    <button className="btn btn-sm btn-outline-danger">🗑️</button>
                   </td>
-                  <td>Nombre {index + 1}</td>
-                  <td>Apellido {index + 1}</td>
-                  <td>10000{index}</td>
-                  <td>usuario{index + 1}@ejemplo.com</td>
+                  <td>{usuario.nombreUsuario}</td>
+                  { /** <td>{usuario.apellido}</td> **/}
+                  <td>{usuario.idUsuario}</td>
+                  { /** <td>{usuario.correo}</td> **/}
                   <td>•••••••</td>
-                  <td>Administrador</td>
+                  <td>{usuario.rol.nombreRol}</td>
                 </tr>
               ))}
             </tbody>
@@ -74,27 +87,23 @@ export default function UsuariosListaPage() {
 
           <div className="col-auto col-sm-12 col-md-6 col-xl-4 align-content-center text-center">
             <nav aria-label="...">
-              <ul className="pagination">
-                <li className="page-item disabled">
-                  <span className="page-link">Anteriores</span>
+              <ul className="pagination justify-content-center">
+                <li className={`page-item ${page === 0 ? "disabled" : ""}`}>
+                  <button className="page-link" onClick={() => setPage(0)}>«</button>
                 </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
-                    1
-                  </a>
+                <li className={`page-item ${page === 0 ? "disabled" : ""}`}>
+                  <button className="page-link" onClick={() => setPage((p) => Math.max(p - 1, 0))}>Anterior</button>
                 </li>
-                <li className="page-item active" aria-current="page">
-                  <span className="page-link">2</span>
+                {getPageNumbers().map((i) => (
+                  <li key={i} className={`page-item ${page === i ? "active" : ""}`}>
+                    <button className="page-link" onClick={() => setPage(i)}>{i + 1}</button>
+                  </li>
+                ))}
+                <li className={`page-item ${page + 1 === totalPages ? "disabled" : ""}`}>
+                  <button className="page-link" onClick={() => setPage((p) => Math.min(p + 1, totalPages - 1))}>Siguiente</button>
                 </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
-                    3
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
-                    Siguiente
-                  </a>
+                <li className={`page-item ${page + 1 === totalPages ? "disabled" : ""}`}>
+                  <button className="page-link" onClick={() => setPage(totalPages - 1)}>»</button>
                 </li>
               </ul>
             </nav>
@@ -104,3 +113,4 @@ export default function UsuariosListaPage() {
     </div>
   );
 }
+
