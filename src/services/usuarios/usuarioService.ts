@@ -1,6 +1,6 @@
 import api from '../api';
 import { ApiPageResponse } from '../commonTypes';
-import { cambioClaveDTO, confirmacionPayload, UsuarioDTO } from './clienteTypes';
+import { cambioClaveDTO, confirmacionPayload, RolDTO, rolSelectDTO, UsuarioDTO } from './clienteTypes';
 
 export const usuarioService = {
 
@@ -17,10 +17,15 @@ export const usuarioService = {
     cambiarClave: async (cambioclavePayload: cambioClaveDTO): Promise<UsuarioDTO> => {
         const res = await api.post(`/usuario/cambio-clave`, cambioclavePayload);
         return res.data.data;
-    },  
+    },
 
     obtenerUsuarios: async (page: number = 0, size: number = 5): Promise<ApiPageResponse<UsuarioDTO>> => {
         const res = await api.get(`/usuario/obtenerListaUsuarios`, { params: { page, size } });
+        return res.data.data;
+    },
+
+    obtenerRoles: async (): Promise<rolSelectDTO[]> => {
+        const res = await api.get(`/roles/obtenerSelectRol`);
         return res.data.data;
     }
 
