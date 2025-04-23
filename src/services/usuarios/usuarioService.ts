@@ -1,6 +1,6 @@
 import api from '../api';
 import { ApiPageResponse } from '../commonTypes';
-import { cambioClaveDTO, confirmacionPayload, RolDTO, rolSelectDTO, UsuarioDTO } from './clienteTypes';
+import { cambioClaveDTO, confirmacionPayload, crearUsuario, RolDTO, rolSelectDTO, UsuarioDTO } from './clienteTypes';
 
 export const usuarioService = {
 
@@ -27,6 +27,10 @@ export const usuarioService = {
     obtenerRoles: async (): Promise<rolSelectDTO[]> => {
         const res = await api.get(`/roles/obtenerSelectRol`);
         return res.data.data;
-    }
+    },
 
+    guardarUsuario: async (data : crearUsuario): Promise<rolSelectDTO[]> => {
+        const res = await api.post(`/roles/obtenerSelectRol`, data);
+        return res.data.data;
+    }
 };

@@ -51,3 +51,11 @@ export interface rolSelectDTO {
     idRol: string;
     nombreRol: string;
 }
+
+export interface crearUsuario {
+    userId: string;
+    userName: string;
+    rolId: string;
+    email: string;
+    phoneNumber: string;
+} 

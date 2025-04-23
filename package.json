@@ -14,10 +14,12 @@
     "aws-amplify": "^6.13.6",
     "axios": "^1.8.4",
     "bootstrap": "^5.3.3",
+    "classnames": "^2.5.1",
     "cosmeticosbellezainfinitaweb": "file:",
     "next": "15.2.3",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-phone-input-2": "^2.15.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

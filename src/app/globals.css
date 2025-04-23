@@ -469,3 +469,14 @@ li {
   background-color: #f1e6ee;
   border-radius: 16px;
 }
+
+.react-tel-input .country-list {
+  color: #000 !important; /* texto negro */
+  background-color: #fff !important; /* fondo blanco */
+  z-index: 1050; /* asegurarse que esté encima de otros elementos */
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+  padding-left: 10px;
+}
+

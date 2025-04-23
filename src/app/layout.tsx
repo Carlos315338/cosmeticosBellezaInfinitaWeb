@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "bootstrap/dist/css/bootstrap.min.css";
+import 'react-phone-input-2/lib/style.css';
 import "./globals.css";
 import '@/services/amplify-config';
 import { AuthProvider } from "@/context/AuthContext";
