@@ -1,9 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchAuthSession } from "@aws-amplify/core";
-
 import { useRouter } from "next/navigation";
 import { usuarioService } from "@/services/usuarios/usuarioService";
 import {
@@ -17,8 +16,10 @@ export default function CambiarContrasenaPage() {
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmNewPassword, setConfirmNewPassword] = useState("");
+
     const router = useRouter();
-    const { user, logout, setAuthData } = useAuth();
+    const { user, setAuthData } = useAuth();
+
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -29,12 +30,12 @@ export default function CambiarContrasenaPage() {
         }
 
         try {
-            const session = await fetchAuthSession();
-            const accessToken = session.tokens?.accessToken?.toString();
 
-            if (!user || !accessToken) return;
+
+            if (!user) return;
 
             if (user?.esprimeravez) {
+                
                 const payload: confirmacionPayload = {
                     username: user.idUsuario,
                     tempPassword: currentPassword,
@@ -43,27 +44,28 @@ export default function CambiarContrasenaPage() {
 
                 await usuarioService.confirmSignIn(payload);
                 await signOut();
-                logout();
                 await signIn({ username: user.idUsuario, password: newPassword });
                 const usuarioLogueado = await usuarioService.obtenerPorId(
                     user.idUsuario
                 );
+
                 setAuthData(usuarioLogueado);
             } else {
-                console.log("accessTokena", accessToken);
-                console.log("confirmacion");
+
+                const session = await fetchAuthSession();
+                const accessToken = session.tokens?.accessToken?.toString();
 
                 const payload: cambioClaveDTO = {
                     idUser: user.idUsuario,
                     contrasenaActual: currentPassword,
                     contrasenaNueva: newPassword,
-                    accessToken: accessToken,
+                    accessToken: accessToken || "",
                 };
 
                 await usuarioService.cambiarClave(payload);
             }
 
-            alert("Contraseña actualizada correctamente");
+            alert("Contraseña actualizada correctamente");  
             router.push("/dashboard");
         } catch (error: any) {
             console.error("Error al cambiar la contraseña:", error);
@@ -81,13 +83,14 @@ export default function CambiarContrasenaPage() {
                 className="forgot-container__logo"
             />
 
-            <form className="forgot-box" onSubmit={handleSubmit}>
+            <form autoComplete="off" className="forgot-box" onSubmit={handleSubmit}>
                 <h2 className="forgot-box__title">Cambiar contraseña</h2>
 
                 <label htmlFor="currentPassword" className="forgot-box__label">
                     Contraseña actual
                 </label>
                 <input
+                    autoComplete="off"
                     type="password"
                     id="currentPassword"
                     className="forgot-box__input"
@@ -100,6 +103,7 @@ export default function CambiarContrasenaPage() {
                     Nueva contraseña
                 </label>
                 <input
+                    autoComplete="off"
                     type="password"
                     id="newPassword"
                     className="forgot-box__input"
@@ -112,6 +116,7 @@ export default function CambiarContrasenaPage() {
                     Vuelva a escribir la nueva contraseña
                 </label>
                 <input
+                    autoComplete="off"
                     type="password"
                     id="confirmNewPassword"
                     className="forgot-box__input"

@@ -125,7 +125,7 @@ export default function UsuariosNuevoPage() {
                             >
                                 <option value="">Seleccione un rol</option>
                                 {roles.map((rol) => (
-                                    <option key={rol.idRol} value={rol.nombreRol}>
+                                    <option key={rol.idRol} value={rol.idRol}>
                                         {rol.nombreRol}
                                     </option>
                                 ))}

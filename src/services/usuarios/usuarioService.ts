@@ -30,7 +30,7 @@ export const usuarioService = {
     },
 
     guardarUsuario: async (data : crearUsuario): Promise<rolSelectDTO[]> => {
-        const res = await api.post(`/roles/obtenerSelectRol`, data);
+        const res = await api.post(`/usuario/crearUsuario`, data);
         return res.data.data;
     }
 };
