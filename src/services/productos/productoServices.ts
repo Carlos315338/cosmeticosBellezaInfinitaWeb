@@ -22,6 +22,15 @@ export const productoService = {
     obtenerCategoriaListaSelect: async (): Promise<CategoriaSelectDTO[]> => {
         const res = await api.get("/categoria/categoriaSelect");
         return res.data.data;
-    }
+    },
 
+    eliminacionProducto: async (id: string): Promise<string> => {
+        const res = await api.delete(`/producto/${id}`);
+        return res.data.message;
+    },
+
+    eliminacionProveedor: async (id: string): Promise<string> => {
+        const res = await api.delete(`/proveedor/${id}`);
+        return res.data.message;
+    },
 };

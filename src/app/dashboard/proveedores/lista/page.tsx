@@ -20,6 +20,21 @@ export default function ProveedoresListaPage() {
         setTotalPages(res.totalPages);
     };
 
+    const handleEliminarProveedor = async (id: string) => {
+        console.log("Click");
+        const confirmacion = window.confirm("¿Estás seguro de que quieres eliminar este Proveedor?");
+        if (!confirmacion) return;
+
+        try {
+            await productoService.eliminacionProveedor(id);
+            alert("Proveedor eliminado exitosamente.");
+            cargarProveedores();
+        } catch (error: any) {
+            console.error("Error al eliminar proveedor:", error);
+            alert(error.message || "No se pudo eliminar el Proveedor");
+        }
+    };
+
     const getPageNumbers = () => {
         const maxVisible = 4;
         const half = Math.floor(maxVisible / 2);
@@ -76,7 +91,7 @@ export default function ProveedoresListaPage() {
                                     <tr key={proveedor.idProveedor}>
                                         <td className="text-center">
                                             <button className="btn btn-sm btn-outline-primary me-1">✏️</button>
-                                            <button className="btn btn-sm btn-outline-danger">🗑️</button>
+                                            <button onClick={() => handleEliminarProveedor(proveedor.idProveedor)} className="btn btn-sm btn-outline-danger">🗑️</button>
                                         </td>
                                         <td>{proveedor.nitProveedor}</td>
                                         <td>{proveedor.nombreProveedor}</td>

@@ -22,6 +22,21 @@ export default function ProductosListaPage() {
         setTotalPages(res.totalPages);
     };
 
+    const handleEliminarProducto = async (id: string) => {
+        console.log("Click");
+        const confirmacion = window.confirm("¿Estás seguro de que quieres eliminar este producto?");
+        if (!confirmacion) return;
+
+        try {
+            await productoService.eliminacionProducto(id);
+            alert("Producto eliminado exitosamente.");
+            cargarProductos(page); 
+        } catch (error: any) {
+            console.error("Error al eliminar producto:", error);
+            alert(error.message || "No se pudo eliminar el producto");
+        }
+    };
+
     const getPageNumbers = () => {
         const maxVisible = 4;
         const half = Math.floor(maxVisible / 2);
@@ -72,7 +87,7 @@ export default function ProductosListaPage() {
                                 <tr key={producto.idProducto}>
                                     <td className="text-center">
                                         <button className="btn btn-sm btn-outline-primary me-1">✏️</button>
-                                        <button className="btn btn-sm btn-outline-danger">🗑️</button>
+                                        <button onClick={() => handleEliminarProducto(producto.idProducto)} className="btn btn-sm btn-outline-danger">🗑️</button>
                                     </td>
                                     <td>{producto.codigoDeBarras}</td>
                                     <td>{producto.nombre}</td>
