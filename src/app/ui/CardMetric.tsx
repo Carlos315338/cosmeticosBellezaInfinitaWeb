@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 interface CardMetricProps {
   title: string;
-  value: string;
+  value: number;
   image: string;
 }
 

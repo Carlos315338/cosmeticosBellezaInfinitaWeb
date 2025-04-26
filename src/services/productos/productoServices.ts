@@ -33,4 +33,19 @@ export const productoService = {
         const res = await api.delete(`/proveedor/${id}`);
         return res.data.message;
     },
+    
+    obtenerCantidadProductos: async (): Promise<number> => {
+        const res = await api.get(`/producto/cantidadProductos`);
+        return res.data.data;
+    },
+    
+    obtenerCantidadProveedores: async (): Promise<number> => {
+        const res = await api.get(`/proveedor/cantidadProveedores`);
+        return res.data.data;
+    },
+    
+    obtenerCantidadCategoria: async (): Promise<number> => {
+        const res = await api.get(`/categoria/cantidadCategoria`);
+        return res.data.data;
+    },
 };

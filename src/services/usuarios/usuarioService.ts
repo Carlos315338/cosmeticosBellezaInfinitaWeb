@@ -42,5 +42,11 @@ export const usuarioService = {
     actualizarUSuario: async (user: UsuarioDTO): Promise<UsuarioDTO> => {
         const res = await api.post(`/usuario/actualizarUsuario`, user);
         return res.data.data;
-    }
+    },
+
+    obtenerCantidadUsuarios: async (): Promise<number> => {
+        const res = await api.get(`/usuario/obtenerCantidadUsuarios`);
+        return res.data.data;
+    },
+
 };
