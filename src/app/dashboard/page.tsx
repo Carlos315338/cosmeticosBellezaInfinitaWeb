@@ -18,7 +18,6 @@ export default function DashboardPage() {
     const [cantidadComprovantes, setCantidadComprovantes] = useState(0);
     const [cantidadDescuentos, setCantidadDescuentos] = useState(0);
     const [cantidadDevoluciones, setCantidadDevoluciones] = useState(0);
-
     const [cantidadCantidadCompras, setCantidadCompras] = useState(0);
     const [cantidadTotalCompras, setTotalCompras] = useState(0);
 
@@ -37,7 +36,6 @@ export default function DashboardPage() {
         currency: "COP",
         minimumFractionDigits: 2,
     });
-
 
     useEffect(() => {
         obtenerMetricas();

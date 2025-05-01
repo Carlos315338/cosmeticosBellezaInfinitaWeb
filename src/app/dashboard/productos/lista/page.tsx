@@ -6,31 +6,52 @@ import { productoService } from "@/services/productos/productoServices";
 import { ProductoDTO } from "@/services/productos/productoTypes";
 
 export default function ProductosListaPage() {
-
     const [productos, setProductos] = useState<ProductoDTO[]>([]);
     const [totalPages, setTotalPages] = useState(1);
-
     const [page, setPage] = useState(0);
+    const [sortField, setSortField] = useState<string>("idProducto");
+    const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+    const [nombreFiltro, setNombreFiltro] = useState<string>("");
+
+    const camposOrdenables: Record<string, string> = {
+        codigo: "codigoDeBarras",
+        producto: "nombre",
+        descripcion: "descripcion",
+        precio: "precio",
+        stock: "stock",
+        categoria: "categoria.nombreCategoria",
+        proveedor: "proveedor.nombreProveedor",
+    };
 
     useEffect(() => {
-        cargarProductos(page);
-    }, [page]);
+        cargarProductos(page, sortField, sortOrder, nombreFiltro);
+    }, [page, sortField, sortOrder, nombreFiltro]);
 
-    const cargarProductos = async (page: number) => {
-        const res = await productoService.obtenerProductos(page, 5, "idProducto");
+    const cargarProductos = async (
+        page: number,
+        sortField: string,
+        sortOrder: "asc" | "desc",
+        nombre: string
+    ) => {
+        const res = await productoService.obtenerProductos(
+            page,
+            5,
+            sortField,
+            sortOrder,
+            nombre.trim()
+        );
         setProductos(res.content);
         setTotalPages(res.totalPages);
     };
 
     const handleEliminarProducto = async (id: string) => {
-        console.log("Click");
         const confirmacion = window.confirm("¿Estás seguro de que quieres eliminar este producto?");
         if (!confirmacion) return;
 
         try {
             await productoService.eliminacionProducto(id);
             alert("Producto eliminado exitosamente.");
-            cargarProductos(page); 
+            cargarProductos(page, sortField, sortOrder, nombreFiltro);
         } catch (error: any) {
             console.error("Error al eliminar producto:", error);
             alert(error.message || "No se pudo eliminar el producto");
@@ -50,6 +71,23 @@ export default function ProductosListaPage() {
         return Array.from({ length: end - start }, (_, i) => start + i);
     };
 
+    const toggleSort = (campoVisual: keyof typeof camposOrdenables) => {
+        const campoReal = camposOrdenables[campoVisual];
+        if (sortField === campoReal) {
+            setSortOrder(prev => (prev === "asc" ? "desc" : "asc"));
+        } else {
+            setSortField(campoReal);
+            setSortOrder("asc");
+        }
+        setPage(0);
+    };
+
+    const renderSortIcon = (campoVisual: keyof typeof camposOrdenables) => {
+        const campoReal = camposOrdenables[campoVisual];
+        if (sortField !== campoReal) return "⇅";
+        return sortOrder === "asc" ? "⬆️" : "⬇️";
+    };
+
     return (
         <div className="container">
             <div className="row">
@@ -60,11 +98,21 @@ export default function ProductosListaPage() {
                     <CurrentTime />
                 </div>
             </div>
+
             <div className="rounded shadow-sm p-0 pe-3 ps-3 mb-4" style={{ background: "white" }}>
                 <div className="row align-items-center text-white rounded mb-3 px-3 py-2 header-customer">
                     <div className="col-sm-8 col-md-6 d-flex align-items-center"></div>
                     <div className="col-sm-4 col-md-6 d-flex align-items-center justify-content-end">
-                        <input type="text" className="form-control w-50 mb-0" placeholder="Buscar" />
+                        <input
+                            type="text"
+                            className="form-control w-50 mb-0"
+                            placeholder="Buscar por nombre"
+                            value={nombreFiltro}
+                            onChange={(e) => {
+                                setPage(0); // resetear a página 1
+                                setNombreFiltro(e.target.value);
+                            }}
+                        />
                     </div>
                 </div>
 
@@ -73,13 +121,27 @@ export default function ProductosListaPage() {
                         <thead className="table-light text-center">
                             <tr>
                                 <th>Acción</th>
-                                <th>Código</th>
-                                <th>Producto</th>
-                                <th>Descripción</th>
-                                <th>Precio</th>
-                                <th>Stock</th>
-                                <th>Categoría</th>
-                                <th>Proveedor</th>
+                                <th onClick={() => toggleSort("codigo")} style={{ cursor: "pointer" }}>
+                                    Código {renderSortIcon("codigo")}
+                                </th>
+                                <th onClick={() => toggleSort("producto")} style={{ cursor: "pointer" }}>
+                                    Producto {renderSortIcon("producto")}
+                                </th>
+                                <th onClick={() => toggleSort("descripcion")} style={{ cursor: "pointer" }}>
+                                    Descripción {renderSortIcon("descripcion")}
+                                </th>
+                                <th onClick={() => toggleSort("precio")} style={{ cursor: "pointer" }}>
+                                    Precio {renderSortIcon("precio")}
+                                </th>
+                                <th onClick={() => toggleSort("stock")} style={{ cursor: "pointer" }}>
+                                    Stock {renderSortIcon("stock")}
+                                </th>
+                                <th onClick={() => toggleSort("categoria")} style={{ cursor: "pointer" }}>
+                                    Categoría {renderSortIcon("categoria")}
+                                </th>
+                                <th onClick={() => toggleSort("proveedor")} style={{ cursor: "pointer" }}>
+                                    Proveedor {renderSortIcon("proveedor")}
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -125,6 +187,6 @@ export default function ProductosListaPage() {
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     );
 }

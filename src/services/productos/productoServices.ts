@@ -4,8 +4,8 @@ import { CategoriaSelectDTO, ProductoDTO, ProveedorDTO, ProveedorSelectDTO } fro
 
 export const productoService = {
 
-    obtenerProductos: async (page: number = 0, size: number = 5, orden: string = "idProducto"): Promise<ApiPageResponse<ProductoDTO>> => {
-        const res = await api.get(`/producto/productos`, { params: { page, size, orden } });
+    obtenerProductos: async (page: number = 0, size: number = 5, sortField: string, sortOrder: string, nombre: string): Promise<ApiPageResponse<ProductoDTO>> => {
+        const res = await api.post(`/producto/productos`, { page, size, sortField, sortOrder, nombre });
         return res.data.data;
     },
 
@@ -33,17 +33,17 @@ export const productoService = {
         const res = await api.delete(`/proveedor/${id}`);
         return res.data.message;
     },
-    
+
     obtenerCantidadProductos: async (): Promise<number> => {
         const res = await api.get(`/producto/cantidadProductos`);
         return res.data.data;
     },
-    
+
     obtenerCantidadProveedores: async (): Promise<number> => {
         const res = await api.get(`/proveedor/cantidadProveedores`);
         return res.data.data;
     },
-    
+
     obtenerCantidadCategoria: async (): Promise<number> => {
         const res = await api.get(`/categoria/cantidadCategoria`);
         return res.data.data;
