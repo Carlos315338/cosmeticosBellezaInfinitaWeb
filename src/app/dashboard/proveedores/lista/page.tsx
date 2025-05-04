@@ -9,19 +9,35 @@ export default function ProveedoresListaPage() {
     const [data, setData] = useState<ProveedorDTO[]>([]);
     const [page, setPage] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
+    const [sortField, setSortField] = useState<string>("nombreProveedor");
+    const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+    const [nombreFiltro, setNombreFiltro] = useState<string>("");
+    const [editandoId, setEditandoId] = useState<string | null>(null);
+    const [formEdit, setFormEdit] = useState<ProveedorDTO>({
+        idProveedor: "",
+        nitProveedor: "",
+        nombreProveedor: "",
+        correoElectronico: "",
+        telefono: "",
+    });
 
     useEffect(() => {
         cargarProveedores();
-    }, [page]);
+    }, [page, sortField, sortOrder, nombreFiltro]);
 
     const cargarProveedores = async () => {
-        const res = await productoService.obtenerProveedores(page, 5);
+        const res = await productoService.obtenerProveedores(
+            page,
+            5,
+            sortField,
+            sortOrder,
+            nombreFiltro.trim()
+        );
         setData(res.content);
         setTotalPages(res.totalPages);
     };
 
     const handleEliminarProveedor = async (id: string) => {
-        console.log("Click");
         const confirmacion = window.confirm("¿Estás seguro de que quieres eliminar este Proveedor?");
         if (!confirmacion) return;
 
@@ -32,6 +48,41 @@ export default function ProveedoresListaPage() {
         } catch (error: any) {
             console.error("Error al eliminar proveedor:", error);
             alert(error.message || "No se pudo eliminar el Proveedor");
+        }
+    };
+
+    const toggleSort = (campo: string) => {
+        if (sortField === campo) {
+            setSortOrder(prev => (prev === "asc" ? "desc" : "asc"));
+        } else {
+            setSortField(campo);
+            setSortOrder("asc");
+        }
+        setPage(0);
+    };
+
+    const renderSortIcon = (campo: string) => {
+        if (sortField !== campo) return "⇅";
+        return sortOrder === "asc" ? "⬆️" : "⬇️";
+    };
+
+    const iniciarEdicion = (proveedor: ProveedorDTO) => {
+        setEditandoId(proveedor.idProveedor);
+        setFormEdit({ ...proveedor });
+    };
+
+    const cancelarEdicion = () => {
+        setEditandoId(null);
+    };
+
+    const guardarCambios = async (id: string) => {
+        try {
+            await productoService.actualizarProveedor(id, formEdit);
+            alert("Proveedor actualizado");
+            setEditandoId(null);
+            cargarProveedores();
+        } catch (err: any) {
+            alert(err.message || "Error al guardar cambios");
         }
     };
 
@@ -58,18 +109,20 @@ export default function ProveedoresListaPage() {
                     <CurrentTime />
                 </div>
             </div>
-            <div
-                className="rounded shadow-sm p-0 pe-3 ps-3 mb-4"
-                style={{ background: "white" }}
-            >
-                {/* Barra de búsqueda */}
+
+            <div className="rounded shadow-sm p-0 pe-3 ps-3 mb-4" style={{ background: "white" }}>
                 <div className="row align-items-center text-white rounded mb-3 px-3 py-2 header-customer">
                     <div className="col-sm-8 col-md-6 d-flex align-items-center"></div>
                     <div className="col-sm-4 col-md-6 d-flex align-items-center justify-content-end">
                         <input
                             type="text"
                             className="form-control w-50 mb-0"
-                            placeholder="Buscar"
+                            placeholder="Buscar por nombre"
+                            value={nombreFiltro}
+                            onChange={(e) => {
+                                setPage(0);
+                                setNombreFiltro(e.target.value);
+                            }}
                         />
                     </div>
                 </div>
@@ -80,23 +133,64 @@ export default function ProveedoresListaPage() {
                             <thead className="table-light text-center">
                                 <tr>
                                     <th>Acción</th>
-                                    <th>NIT Proveedor</th>
-                                    <th>Nombre Proveedor</th>
-                                    <th>Correo Electrónico</th>
-                                    <th>Teléfono</th>
+                                    <th onClick={() => toggleSort("nitProveedor")} style={{ cursor: "pointer" }}>
+                                        NIT Proveedor {renderSortIcon("nitProveedor")}
+                                    </th>
+                                    <th onClick={() => toggleSort("nombreProveedor")} style={{ cursor: "pointer" }}>
+                                        Nombre Proveedor {renderSortIcon("nombreProveedor")}
+                                    </th>
+                                    <th onClick={() => toggleSort("correoElectronico")} style={{ cursor: "pointer" }}>
+                                        Correo Electrónico {renderSortIcon("correoElectronico")}
+                                    </th>
+                                    <th onClick={() => toggleSort("telefono")} style={{ cursor: "pointer" }}>
+                                        Teléfono {renderSortIcon("telefono")}
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {data.map((proveedor) => (
                                     <tr key={proveedor.idProveedor}>
                                         <td className="text-center">
-                                            <button className="btn btn-sm btn-outline-primary me-1">✏️</button>
-                                            <button onClick={() => handleEliminarProveedor(proveedor.idProveedor)} className="btn btn-sm btn-outline-danger">🗑️</button>
+                                            {editandoId === proveedor.idProveedor ? (
+                                                <>
+                                                    <button className="btn btn-sm btn-success me-1" onClick={() => guardarCambios(proveedor.idProveedor)}>💾</button>
+                                                    <button className="btn btn-sm btn-secondary" onClick={cancelarEdicion}>❌</button>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <button className="btn btn-sm btn-outline-primary me-1" onClick={() => iniciarEdicion(proveedor)}>✏️</button>
+                                                    <button onClick={() => handleEliminarProveedor(proveedor.idProveedor)} className="btn btn-sm btn-outline-danger">🗑️</button>
+                                                </>
+                                            )}
                                         </td>
-                                        <td>{proveedor.nitProveedor}</td>
-                                        <td>{proveedor.nombreProveedor}</td>
-                                        <td>{proveedor.correoElectronico}</td>
-                                        <td>{proveedor.telefono}</td>
+                                        <td>
+                                            {editandoId === proveedor.idProveedor ? (
+                                                <input value={formEdit.nitProveedor} onChange={e => setFormEdit(prev => ({ ...prev, nitProveedor: e.target.value }))} className="form-control" />
+                                            ) : (
+                                                proveedor.nitProveedor
+                                            )}
+                                        </td>
+                                        <td>
+                                            {editandoId === proveedor.idProveedor ? (
+                                                <input value={formEdit.nombreProveedor} onChange={e => setFormEdit(prev => ({ ...prev, nombreProveedor: e.target.value }))} className="form-control" />
+                                            ) : (
+                                                proveedor.nombreProveedor
+                                            )}
+                                        </td>
+                                        <td>
+                                            {editandoId === proveedor.idProveedor ? (
+                                                <input value={formEdit.correoElectronico} onChange={e => setFormEdit(prev => ({ ...prev, correoElectronico: e.target.value }))} className="form-control" />
+                                            ) : (
+                                                proveedor.correoElectronico
+                                            )}
+                                        </td>
+                                        <td>
+                                            {editandoId === proveedor.idProveedor ? (
+                                                <input value={formEdit.telefono} onChange={e => setFormEdit(prev => ({ ...prev, telefono: e.target.value }))} className="form-control" />
+                                            ) : (
+                                                proveedor.telefono
+                                            )}
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -128,7 +222,7 @@ export default function ProveedoresListaPage() {
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     );
 }
 

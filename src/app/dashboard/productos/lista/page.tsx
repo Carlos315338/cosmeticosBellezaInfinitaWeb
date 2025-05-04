@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import CurrentTime from "@/app/ui/CurrentTime";
 import { productoService } from "@/services/productos/productoServices";
-import { ProductoDTO } from "@/services/productos/productoTypes";
+import { CategoriaSelectDTO, ProductoDTO, ProductoUpdateDTO, ProveedorSelectDTO } from "@/services/productos/productoTypes";
 
 export default function ProductosListaPage() {
     const [productos, setProductos] = useState<ProductoDTO[]>([]);
@@ -12,6 +12,19 @@ export default function ProductosListaPage() {
     const [sortField, setSortField] = useState<string>("idProducto");
     const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
     const [nombreFiltro, setNombreFiltro] = useState<string>("");
+    const [editandoId, setEditandoId] = useState<string | null>(null);
+    const [productoEditado, setProductoEditado] = useState<ProductoUpdateDTO>({
+        idProducto: "",
+        codigoDeBarras: "",
+        nombre: "",
+        descripcion: "",
+        precio: 0,
+        stock: 0,
+        categoriaId: "",
+        proveedorId: "",
+    });
+    const [proveedores, setProveedores] = useState<ProveedorSelectDTO[]>([]);
+    const [categorias, setCategorias] = useState<CategoriaSelectDTO[]>([]);
 
     const camposOrdenables: Record<string, string> = {
         codigo: "codigoDeBarras",
@@ -27,19 +40,13 @@ export default function ProductosListaPage() {
         cargarProductos(page, sortField, sortOrder, nombreFiltro);
     }, [page, sortField, sortOrder, nombreFiltro]);
 
-    const cargarProductos = async (
-        page: number,
-        sortField: string,
-        sortOrder: "asc" | "desc",
-        nombre: string
-    ) => {
-        const res = await productoService.obtenerProductos(
-            page,
-            5,
-            sortField,
-            sortOrder,
-            nombre.trim()
-        );
+    useEffect(() => {
+        productoService.obtenerProveedorListaSelect().then(setProveedores);
+        productoService.obtenerCategoriaListaSelect().then(setCategorias);
+    }, []);
+
+    const cargarProductos = async (page: number, sortField: string, sortOrder: "asc" | "desc", nombre: string) => {
+        const res = await productoService.obtenerProductos(page, 5, sortField, sortOrder, nombre.trim());
         setProductos(res.content);
         setTotalPages(res.totalPages);
     };
@@ -53,8 +60,28 @@ export default function ProductosListaPage() {
             alert("Producto eliminado exitosamente.");
             cargarProductos(page, sortField, sortOrder, nombreFiltro);
         } catch (error: any) {
-            console.error("Error al eliminar producto:", error);
             alert(error.message || "No se pudo eliminar el producto");
+        }
+    };
+
+    const handleGuardarEdicion = async () => {
+        if (!editandoId) return;
+        try {
+            await productoService.actualizacionProducto(editandoId, productoEditado);
+            setEditandoId(null);
+            setProductoEditado({
+                idProducto: "",
+                codigoDeBarras: "",
+                nombre: "",
+                descripcion: "",
+                precio: 0,
+                stock: 0,
+                categoriaId: "",
+                proveedorId: "",
+            });
+            cargarProductos(page, sortField, sortOrder, nombreFiltro);
+        } catch (error: any) {
+            alert(error.message || "Error al actualizar el producto");
         }
     };
 
@@ -63,11 +90,9 @@ export default function ProductosListaPage() {
         const half = Math.floor(maxVisible / 2);
         let start = Math.max(0, page - half);
         let end = Math.min(totalPages, start + maxVisible);
-
         if (end - start < maxVisible) {
             start = Math.max(0, end - maxVisible);
         }
-
         return Array.from({ length: end - start }, (_, i) => start + i);
     };
 
@@ -109,7 +134,7 @@ export default function ProductosListaPage() {
                             placeholder="Buscar por nombre"
                             value={nombreFiltro}
                             onChange={(e) => {
-                                setPage(0); // resetear a página 1
+                                setPage(0);
                                 setNombreFiltro(e.target.value);
                             }}
                         />
@@ -121,43 +146,70 @@ export default function ProductosListaPage() {
                         <thead className="table-light text-center">
                             <tr>
                                 <th>Acción</th>
-                                <th onClick={() => toggleSort("codigo")} style={{ cursor: "pointer" }}>
-                                    Código {renderSortIcon("codigo")}
-                                </th>
-                                <th onClick={() => toggleSort("producto")} style={{ cursor: "pointer" }}>
-                                    Producto {renderSortIcon("producto")}
-                                </th>
-                                <th onClick={() => toggleSort("descripcion")} style={{ cursor: "pointer" }}>
-                                    Descripción {renderSortIcon("descripcion")}
-                                </th>
-                                <th onClick={() => toggleSort("precio")} style={{ cursor: "pointer" }}>
-                                    Precio {renderSortIcon("precio")}
-                                </th>
-                                <th onClick={() => toggleSort("stock")} style={{ cursor: "pointer" }}>
-                                    Stock {renderSortIcon("stock")}
-                                </th>
-                                <th onClick={() => toggleSort("categoria")} style={{ cursor: "pointer" }}>
-                                    Categoría {renderSortIcon("categoria")}
-                                </th>
-                                <th onClick={() => toggleSort("proveedor")} style={{ cursor: "pointer" }}>
-                                    Proveedor {renderSortIcon("proveedor")}
-                                </th>
+                                <th onClick={() => toggleSort("codigo")} style={{ cursor: "pointer" }}>Código {renderSortIcon("codigo")}</th>
+                                <th onClick={() => toggleSort("producto")} style={{ cursor: "pointer" }}>Producto {renderSortIcon("producto")}</th>
+                                <th onClick={() => toggleSort("descripcion")} style={{ cursor: "pointer" }}>Descripción {renderSortIcon("descripcion")}</th>
+                                <th onClick={() => toggleSort("precio")} style={{ cursor: "pointer" }}>Precio {renderSortIcon("precio")}</th>
+                                <th onClick={() => toggleSort("stock")} style={{ cursor: "pointer" }}>Stock {renderSortIcon("stock")}</th>
+                                <th onClick={() => toggleSort("categoria")} style={{ cursor: "pointer" }}>Categoría {renderSortIcon("categoria")}</th>
+                                <th onClick={() => toggleSort("proveedor")} style={{ cursor: "pointer" }}>Proveedor {renderSortIcon("proveedor")}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {productos.map((producto) => (
                                 <tr key={producto.idProducto}>
                                     <td className="text-center">
-                                        <button className="btn btn-sm btn-outline-primary me-1">✏️</button>
-                                        <button onClick={() => handleEliminarProducto(producto.idProducto)} className="btn btn-sm btn-outline-danger">🗑️</button>
+                                        {editandoId === producto.idProducto ? (
+                                            <>
+                                                <button onClick={handleGuardarEdicion} className="btn btn-sm btn-success me-1">💾</button>
+                                                <button onClick={() => setEditandoId(null)} className="btn btn-sm btn-secondary">❌</button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <button
+                                                    onClick={() => {
+                                                        setEditandoId(producto.idProducto);
+                                                        setProductoEditado({
+                                                            idProducto: producto.idProducto,
+                                                            codigoDeBarras: producto.codigoDeBarras,
+                                                            nombre: producto.nombre,
+                                                            descripcion: producto.descripcion,
+                                                            precio: producto.precio,
+                                                            stock: producto.stock,
+                                                            categoriaId: producto.categoria.idCategoria,
+                                                            proveedorId: producto.proveedor.idProveedor,
+                                                        });
+                                                    }}
+                                                    className="btn btn-sm btn-outline-primary me-1"
+                                                >✏️</button>
+                                                <button
+                                                    onClick={() => handleEliminarProducto(producto.idProducto)}
+                                                    className="btn btn-sm btn-outline-danger"
+                                                >🗑️</button>
+                                            </>
+                                        )}
                                     </td>
-                                    <td>{producto.codigoDeBarras}</td>
-                                    <td>{producto.nombre}</td>
-                                    <td>{producto.descripcion}</td>
-                                    <td>$ {producto.precio}</td>
-                                    <td>{producto.stock}</td>
-                                    <td>{producto.categoria.nombreCategoria}</td>
-                                    <td>{producto.proveedor.nombreProveedor}</td>
+                                    <td>{editandoId === producto.idProducto ? <input className="form-control" value={productoEditado.codigoDeBarras} onChange={(e) => setProductoEditado({ ...productoEditado, codigoDeBarras: e.target.value })} /> : producto.codigoDeBarras}</td>
+                                    <td>{editandoId === producto.idProducto ? <input className="form-control" value={productoEditado.nombre} onChange={(e) => setProductoEditado({ ...productoEditado, nombre: e.target.value })} /> : producto.nombre}</td>
+                                    <td>{editandoId === producto.idProducto ? <input className="form-control" value={productoEditado.descripcion} onChange={(e) => setProductoEditado({ ...productoEditado, descripcion: e.target.value })} /> : producto.descripcion}</td>
+                                    <td>{editandoId === producto.idProducto ? <input type="number" className="form-control" value={productoEditado.precio} onChange={(e) => setProductoEditado({ ...productoEditado, precio: parseFloat(e.target.value) })} /> : `$ ${producto.precio}`}</td>
+                                    <td>{editandoId === producto.idProducto ? <input type="number" className="form-control" value={productoEditado.stock} onChange={(e) => setProductoEditado({ ...productoEditado, stock: parseInt(e.target.value) })} /> : producto.stock}</td>
+                                    <td>{editandoId === producto.idProducto ? (
+                                        <select className="form-control" value={productoEditado.categoriaId} onChange={(e) => setProductoEditado({ ...productoEditado, categoriaId: e.target.value })}>
+                                            <option value="">Seleccione una categoría</option>
+                                            {categorias.map(c => (
+                                                <option key={c.idCategoria} value={c.idCategoria}>{c.nombreCategoria}</option>
+                                            ))}
+                                        </select>
+                                    ) : producto.categoria.nombreCategoria}</td>
+                                    <td>{editandoId === producto.idProducto ? (
+                                        <select className="form-control" value={productoEditado.proveedorId} onChange={(e) => setProductoEditado({ ...productoEditado, proveedorId: e.target.value })}>
+                                            <option value="">Seleccione un proveedor</option>
+                                            {proveedores.map(p => (
+                                                <option key={p.idProveedor} value={p.idProveedor}>{p.nombreProveedor}</option>
+                                            ))}
+                                        </select>
+                                    ) : producto.proveedor.nombreProveedor}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -190,3 +242,4 @@ export default function ProductosListaPage() {
         </div>
     );
 }
+

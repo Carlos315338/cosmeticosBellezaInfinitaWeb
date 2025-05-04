@@ -33,3 +33,13 @@ export interface CategoriaSelectDTO {
   nombreCategoria	: string;
 }
 
+export interface ProductoUpdateDTO {
+  idProducto: string;
+  codigoDeBarras: string;
+  nombre: string;
+  descripcion: string;
+  precio: number;
+  stock: number;
+  categoriaId: string;
+  proveedorId: string;
+}
