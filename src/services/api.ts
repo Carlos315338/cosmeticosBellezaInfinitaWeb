@@ -30,16 +30,22 @@ api.interceptors.request.use(
 api.interceptors.response.use(
     response => {
         if (response.data && response.data.success === false) {
-            // Considera esto como error
-            return Promise.reject({
-                message: response.data.message || 'Ocurrió un error',
-                response: response
-            });
+            const msg = response.data.message || 'Ocurrió un error';
+            window.dispatchEvent(new CustomEvent("global-error", {
+                detail: { message: msg }
+            }));
+            return Promise.reject({ message: msg, response });
         }
         return response;
     },
     error => {
-        // Errores HTTP reales (404, 500, etc)
+        const msg = error?.response?.data?.message || "Error procesando su solicitud";
+
+        // Lanza alerta global
+        window.dispatchEvent(new CustomEvent("global-error", {
+            detail: { message: msg }
+        }));
+
         return Promise.reject(error);
     }
 );

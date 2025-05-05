@@ -23,6 +23,14 @@ export default function DashboardPage() {
 
     const [cantidadCantidadVentas, setCantidadVentas] = useState(0);
     const [cantidadTotalVentas, setTotalVentas] = useState(0);
+    const [loadingClientes, setLoadingClientes] = useState(true);
+    const [loadingEmpleados, setLoadingEmpleados] = useState(true);
+    const [loadingProductos, setLoadingProductos] = useState(true);
+    const [loadingCategorias, setLoadingCategorias] = useState(true);
+    const [loadingProveedores, setLoadingProveedores] = useState(true);
+    const [loadingComprobantes, setLoadingComprobantes] = useState(true);
+    const [loadingDescuentos, setLoadingDescuentos] = useState(true);
+    const [loadingDevoluciones, setLoadingDevoluciones] = useState(true);
 
     const formateadorCantidad = new Intl.NumberFormat("es-CO", {
         style: "decimal",
@@ -43,31 +51,77 @@ export default function DashboardPage() {
     }, []);
 
     const obtenerMetricas = async () => {
+        try {
+            const res = await finanzaService.obtenerCantidadClientes();
+            setCantidadClientes(res);
+        } catch (e) {
+            console.error("Error clientes:", e);
+        } finally {
+            setLoadingClientes(false);
+        }
 
-        const resObtenerCantidadCliente = await finanzaService.obtenerCantidadClientes();
-        setCantidadClientes(resObtenerCantidadCliente);
+        try {
+            const res = await usuarioService.obtenerCantidadUsuarios();
+            setCantidadEmpleados(res);
+        } catch (e) {
+            console.error("Error empleados:", e);
+        } finally {
+            setLoadingEmpleados(false);
+        }
 
-        const resObtenerCantidadEmpleados = await usuarioService.obtenerCantidadUsuarios();
-        setCantidadEmpleados(resObtenerCantidadEmpleados);
+        try {
+            const res = await productoService.obtenerCantidadProductos();
+            setCantidadProductos(res);
+        } catch (e) {
+            console.error("Error productos:", e);
+        } finally {
+            setLoadingProductos(false);
+        }
 
-        const resObtenerCantidadProductos = await productoService.obtenerCantidadProductos();
-        setCantidadProductos(resObtenerCantidadProductos);
+        try {
+            const res = await productoService.obtenerCantidadCategoria();
+            setCantidadCategorias(res);
+        } catch (e) {
+            console.error("Error categorías:", e);
+        } finally {
+            setLoadingCategorias(false);
+        }
 
-        const resObtenerCantidadCategorias = await productoService.obtenerCantidadCategoria();
-        setCantidadCategorias(resObtenerCantidadCategorias);
+        try {
+            const res = await productoService.obtenerCantidadProveedores();
+            setCantidadProveedores(res);
+        } catch (e) {
+            console.error("Error proveedores:", e);
+        } finally {
+            setLoadingProveedores(false);
+        }
 
-        const resObtenerCantidadProveedores = await productoService.obtenerCantidadProveedores();
-        setCantidadProveedores(resObtenerCantidadProveedores);
+        try {
+            const res = await usuarioService.obtenerCantidadUsuarios();
+            setCantidadComprovantes(res);
+        } catch (e) {
+            console.error("Error comprobantes:", e);
+        } finally {
+            setLoadingComprobantes(false);
+        }
 
-        const resObtenerCantidadComprovantes = await usuarioService.obtenerCantidadUsuarios();
-        setCantidadComprovantes(resObtenerCantidadComprovantes);
+        try {
+            const res = await usuarioService.obtenerCantidadUsuarios();
+            setCantidadDescuentos(res);
+        } catch (e) {
+            console.error("Error descuentos:", e);
+        } finally {
+            setLoadingDescuentos(false);
+        }
 
-        const resObtenerCantidadDescuentos = await usuarioService.obtenerCantidadUsuarios();
-        setCantidadDescuentos(resObtenerCantidadDescuentos);
-
-        const resObtenerCantidadDevoluciones = await usuarioService.obtenerCantidadUsuarios();
-        setCantidadDevoluciones(resObtenerCantidadDevoluciones);
-
+        try {
+            const res = await usuarioService.obtenerCantidadUsuarios();
+            setCantidadDevoluciones(res);
+        } catch (e) {
+            console.error("Error devoluciones:", e);
+        } finally {
+            setLoadingDevoluciones(false);
+        }
     };
 
     const obtenerResumen = async () => {
@@ -87,16 +141,15 @@ export default function DashboardPage() {
                 <CurrentTime />
             </div>
             <div className="row">
-                <CardMetric title="Empleados" value={cantidadEmpleados} image="/team.png" />
-                <CardMetric title="Productos" value={cantidadProductos} image="/products.png" />
-                <CardMetric title="Categorías" value={cantidadCategorias} image="/checklist.png" />
-                <CardMetric title="Clientes" value={cantidadClientes} image="/client.png" />
-                <CardMetric title="Proveedores" value={cantidadProveedores} image="/control.png" />
-                <CardMetric title="Comprobantes" value={cantidadComprovantes} image="/bill.png" />
-                <CardMetric title="Descuentos" value={cantidadDescuentos} image="/discount.png" />
-                <CardMetric title="Devoluciones" value={cantidadDevoluciones} image="/return.png" />
+                <CardMetric title="Empleados" value={cantidadEmpleados} image="/team.png" loading={loadingEmpleados} />
+                <CardMetric title="Productos" value={cantidadProductos} image="/products.png" loading={loadingProductos} />
+                <CardMetric title="Categorías" value={cantidadCategorias} image="/checklist.png" loading={loadingCategorias} />
+                <CardMetric title="Clientes" value={cantidadClientes} image="/client.png" loading={loadingClientes} />
+                <CardMetric title="Proveedores" value={cantidadProveedores} image="/control.png" loading={loadingProveedores} />
+                <CardMetric title="Comprobantes" value={cantidadComprovantes} image="/bill.png" loading={loadingComprobantes} />
+                <CardMetric title="Descuentos" value={cantidadDescuentos} image="/discount.png" loading={loadingDescuentos} />
+                <CardMetric title="Devoluciones" value={cantidadDevoluciones} image="/return.png" loading={loadingDevoluciones} />
             </div>
-
             <div className="row">
                 <CardResumen
                     title="Compras"

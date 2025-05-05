@@ -56,6 +56,47 @@
     U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+.alert-global {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    background-color: #dc3545;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    animation: fadeIn 0.4s ease-out;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-cerrar {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+.fade-out {
+    animation: fadeOut 0.4s ease-in forwards;
+}
+
 .logo-container {
   display: flex;
   flex-direction: column;

@@ -6,19 +6,34 @@ import { ClienteDTO } from "@/services/finanza/finanzaType";
 import { useEffect, useState } from "react";
 
 export default function ClientesListaPage() {
-
     const [clientes, setClientes] = useState<ClienteDTO[]>([]);
     const [totalPages, setTotalPages] = useState(1);
     const [page, setPage] = useState(0);
+    const [loading, setLoading] = useState(false);
+    const [nombreFiltro, setNombreFiltro] = useState("");
+    const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+    const [sortField, setSortField] = useState<string>("nombreCompleto");
+    const [editandoId, setEditandoId] = useState<string | null>(null);
+    const [clienteEditado, setClienteEditado] = useState<ClienteDTO>({
+        id: "", identificacion: "", primerNombre: "", segundoNombre: "",
+        primerApellido: "", segundoApellido: "", correoElectronico: "", telefono: ""
+    });
 
     useEffect(() => {
-        cargarClientes(page);
-    }, [page]);
+        cargarClientes(page, nombreFiltro.trim(), sortField, sortOrder);
+    }, [page, nombreFiltro, sortField, sortOrder]);
 
-    const cargarClientes = async (page: number) => {
-        const res = await finanzaService.obtenerClientes(page, 5);
-        setClientes(res.content);
-        setTotalPages(res.totalPages);
+    const cargarClientes = async (page: number, nombre: string, campo: string, orden: "asc" | "desc") => {
+        setLoading(true);
+        try {
+            const res = await finanzaService.obtenerClientes(page, 5, campo, orden, nombre);
+            setClientes(res.content);
+            setTotalPages(res.totalPages);
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleEliminarCliente = async (id: string) => {
@@ -28,10 +43,20 @@ export default function ClientesListaPage() {
         try {
             await finanzaService.eliminacionCliente(id);
             alert("Cliente eliminado exitosamente.");
-            cargarClientes(page);
+            cargarClientes(page, nombreFiltro, sortField, sortOrder);
         } catch (error: any) {
-            console.error("Error al eliminar cliente:", error);
             alert(error.message || "No se pudo eliminar el cliente");
+        }
+    };
+
+    const handleGuardarEdicion = async () => {
+        if (!editandoId) return;
+        try {
+            await finanzaService.actualizacionCliente(editandoId, clienteEditado);
+            setEditandoId(null);
+            cargarClientes(page, nombreFiltro, sortField, sortOrder);
+        } catch (error: any) {
+            alert(error.message || "Error al actualizar el cliente");
         }
     };
 
@@ -40,18 +65,26 @@ export default function ClientesListaPage() {
         const half = Math.floor(maxVisible / 2);
         let start = Math.max(0, page - half);
         let end = Math.min(totalPages, start + maxVisible);
-
-        if (end - start < maxVisible) {
-            start = Math.max(0, end - maxVisible);
-        }
-
+        if (end - start < maxVisible) start = Math.max(0, end - maxVisible);
         return Array.from({ length: end - start }, (_, i) => start + i);
     };
 
-    const handlePageChange = (newPage: number) => {
-        if (newPage >= 0 && newPage < totalPages) {
-            setPage(newPage);
+    const toggleSort = (campo: string) => {
+        if (sortField === campo) {
+            setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+        } else {
+            setSortField(campo);
+            setSortOrder("asc");
         }
+        setPage(0);
+    };
+
+    const nombreCompleto = (c: ClienteDTO) =>
+        `${c.primerNombre} ${c.segundoNombre || ""} ${c.primerApellido} ${c.segundoApellido || ""}`.trim();
+
+    const renderSortIcon = (campo: string) => {
+        if (sortField !== campo) return "⇅";
+        return sortOrder === "asc" ? "⬆️" : "⬇️";
     };
 
     return (
@@ -66,104 +99,106 @@ export default function ClientesListaPage() {
             </div>
 
             <div className="rounded shadow-sm p-0 pe-3 ps-3 mb-4" style={{ background: "white" }}>
-                {/* Barra de búsqueda */}
                 <div className="row align-items-center text-white rounded mb-3 px-3 py-2 header-customer">
-                    <div className="col-sm-8 col-md-6 d-flex align-items-center">
-                        {/* Puedes agregar un ícono o título aquí */}
-                    </div>
-                    <div className="col-sm-4 col-md-6 d-flex align-items-center justify-content-end">
+                    <div className="col-sm-8 col-md-6"></div>
+                    <div className="col-sm-4 col-md-6 d-flex justify-content-end">
                         <input
                             type="text"
-                            className="form-control w-50 mb-0"
-                            placeholder="Buscar"
+                            className="form-control w-50"
+                            placeholder="Buscar por nombre"
+                            value={nombreFiltro}
+                            onChange={(e) => {
+                                setPage(0);
+                                setNombreFiltro(e.target.value);
+                            }}
                         />
                     </div>
                 </div>
 
-                {/* Tabla */}
                 <div className="table-responsive">
                     <table className="table table-bordered table-hover">
                         <thead className="table-light text-center">
                             <tr>
                                 <th>Acción</th>
-                                <th>Identificación</th>
-                                <th>Nombre Completo</th>
-                                <th>Dirección</th>
-                                <th>Correo</th>
-                                <th>Teléfono</th>
+                                <th style={{ cursor: "pointer" }} onClick={() => toggleSort("identificacion")}>
+                                    Identificación {renderSortIcon("identificacion")}
+                                </th>
+                                <th style={{ cursor: "pointer" }} onClick={() => toggleSort("nombreCompleto")}>
+                                    Nombre Completo {renderSortIcon("nombreCompleto")}
+                                </th>
+                                {/** <th>Dirección</th> */}
+                                <th style={{ cursor: "pointer" }} onClick={() => toggleSort("correoElectronico")}>
+                                    Correo {renderSortIcon("correoElectronico")}
+                                </th>
+                                <th style={{ cursor: "pointer" }} onClick={() => toggleSort("telefono")}>
+                                    Teléfono {renderSortIcon("telefono")}
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            {clientes.length === 0 ? (
-                                <tr>
-                                    <td colSpan={6} className="text-center">No hay clientes disponibles.</td>
-                                </tr>
+                            {loading ? (
+                                <tr><td colSpan={5} className="text-center py-4">
+                                    <div className="spinner-border" style={{ color: "#5c0061" }} role="status">
+                                        <span className="visually-hidden">Cargando...</span>
+                                    </div>
+                                </td></tr>
+                            ) : clientes.length === 0 ? (
+                                <tr><td colSpan={5} className="text-center">No hay clientes disponibles.</td></tr>
                             ) : (
-                                clientes.map((cliente) => (
+                                clientes.map(cliente => (
                                     <tr key={cliente.id}>
                                         <td className="text-center">
-                                            <button
-                                                className="btn btn-sm btn-outline-primary me-1"
-                                                onClick={() => alert("Funcionalidad de edición aún no implementada")}
-                                            >
-                                                ✏️
-                                            </button>
-                                            <button
-                                                className="btn btn-sm btn-outline-danger"
-                                                onClick={() => handleEliminarCliente(cliente.id)}
-                                            >
-                                                🗑️
-                                            </button>
+                                            {editandoId === cliente.id ? (
+                                                <>
+                                                    <button onClick={handleGuardarEdicion} className="btn btn-sm btn-success me-1">💾</button>
+                                                    <button onClick={() => setEditandoId(null)} className="btn btn-sm btn-secondary">❌</button>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <button className="btn btn-sm btn-outline-primary me-1" onClick={() => {
+                                                        setEditandoId(cliente.id);
+                                                        setClienteEditado(cliente);
+                                                    }}>✏️</button>
+                                                    <button className="btn btn-sm btn-outline-danger" onClick={() => handleEliminarCliente(cliente.id)}>🗑️</button>
+                                                </>
+                                            )}
                                         </td>
-                                        <td>{cliente.identificacion}</td>
-                                        <td>{`${cliente.primerNombre} ${cliente.segundoNombre} ${cliente.primerApellido} ${cliente.segundoApellido}`}</td>
-                                        <td>Dirección no disponible</td>
-                                        <td>{cliente.correoElectronico}</td>
-                                        <td>{cliente.telefono}</td>
+                                        <td>{editandoId === cliente.id ? <input className="form-control" value={clienteEditado.identificacion} onChange={(e) => setClienteEditado({ ...clienteEditado, identificacion: e.target.value })} /> : cliente.identificacion}</td>
+                                        <td>{editandoId === cliente.id ? (
+                                            <div className="d-flex flex-column gap-1">
+                                                <input className="form-control" placeholder="Primer nombre" value={clienteEditado.primerNombre} onChange={(e) => setClienteEditado({ ...clienteEditado, primerNombre: e.target.value })} />
+                                                <input className="form-control" placeholder="Segundo nombre" value={clienteEditado.segundoNombre} onChange={(e) => setClienteEditado({ ...clienteEditado, segundoNombre: e.target.value })} />
+                                                <input className="form-control" placeholder="Primer apellido" value={clienteEditado.primerApellido} onChange={(e) => setClienteEditado({ ...clienteEditado, primerApellido: e.target.value })} />
+                                                <input className="form-control" placeholder="Segundo apellido" value={clienteEditado.segundoApellido} onChange={(e) => setClienteEditado({ ...clienteEditado, segundoApellido: e.target.value })} />
+                                            </div>
+                                        ) : nombreCompleto(cliente)}</td>
+                                        <td>{editandoId === cliente.id ? <input className="form-control" value={clienteEditado.correoElectronico} onChange={(e) => setClienteEditado({ ...clienteEditado, correoElectronico: e.target.value })} /> : cliente.correoElectronico}</td>
+                                        <td>{editandoId === cliente.id ? <input className="form-control" value={clienteEditado.telefono} onChange={(e) => setClienteEditado({ ...clienteEditado, telefono: e.target.value })} /> : cliente.telefono}</td>
                                     </tr>
                                 ))
                             )}
                         </tbody>
-
                     </table>
                 </div>
 
-                {/* Paginación */}
                 <div className="row">
-                    <div className="col-auto col-sm-12 col-md-6 col-xl-8 align-content-center">
+                    <div className="col-auto col-sm-12 col-md-6 col-xl-8">
                         <button className="btn btn-submit">Agregar Cliente</button>
                     </div>
-
-                    <div className="col-auto col-sm-12 col-md-6 col-xl-4 align-content-center text-center">
-                        <nav aria-label="Page navigation">
-                            <ul className="pagination justify-content-center">
-
-                                {/* Botón anterior */}
+                    <div className="col-auto col-sm-12 col-md-6 col-xl-4 text-center">
+                        <nav>
+                            <ul className="pagination">
                                 <li className={`page-item ${page === 0 ? "disabled" : ""}`}>
-                                    <button className="page-link" onClick={() => handlePageChange(page - 1)}>
-                                        Anterior
-                                    </button>
+                                    <button className="page-link" onClick={() => setPage(p => Math.max(p - 1, 0))}>Anterior</button>
                                 </li>
-
-                                {/* Números de página */}
-                                {getPageNumbers().map((pageNum) => (
-                                    <li
-                                        key={pageNum}
-                                        className={`page-item ${pageNum === page ? "active" : ""}`}
-                                    >
-                                        <button className="page-link" onClick={() => handlePageChange(pageNum)}>
-                                            {pageNum + 1}
-                                        </button>
+                                {getPageNumbers().map(i => (
+                                    <li key={i} className={`page-item ${i === page ? "active" : ""}`}>
+                                        <button className="page-link" onClick={() => setPage(i)}>{i + 1}</button>
                                     </li>
                                 ))}
-
-                                {/* Botón siguiente */}
                                 <li className={`page-item ${page + 1 >= totalPages ? "disabled" : ""}`}>
-                                    <button className="page-link" onClick={() => handlePageChange(page + 1)}>
-                                        Siguiente
-                                    </button>
+                                    <button className="page-link" onClick={() => setPage(p => Math.min(p + 1, totalPages - 1))}>Siguiente</button>
                                 </li>
-
                             </ul>
                         </nav>
                     </div>

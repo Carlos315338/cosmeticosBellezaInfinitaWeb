@@ -12,6 +12,7 @@ export default function ProveedoresListaPage() {
     const [sortField, setSortField] = useState<string>("nombreProveedor");
     const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
     const [nombreFiltro, setNombreFiltro] = useState<string>("");
+    const [loading, setLoading] = useState(false);
     const [editandoId, setEditandoId] = useState<string | null>(null);
     const [formEdit, setFormEdit] = useState<ProveedorDTO>({
         idProveedor: "",
@@ -26,15 +27,22 @@ export default function ProveedoresListaPage() {
     }, [page, sortField, sortOrder, nombreFiltro]);
 
     const cargarProveedores = async () => {
-        const res = await productoService.obtenerProveedores(
-            page,
-            5,
-            sortField,
-            sortOrder,
-            nombreFiltro.trim()
-        );
-        setData(res.content);
-        setTotalPages(res.totalPages);
+        setLoading(true);
+        try {
+            const res = await productoService.obtenerProveedores(
+                page,
+                5,
+                sortField,
+                sortOrder,
+                nombreFiltro.trim()
+            );
+            setData(res.content);
+            setTotalPages(res.totalPages);
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleEliminarProveedor = async (id: string) => {
@@ -148,51 +156,58 @@ export default function ProveedoresListaPage() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {data.map((proveedor) => (
-                                    <tr key={proveedor.idProveedor}>
-                                        <td className="text-center">
-                                            {editandoId === proveedor.idProveedor ? (
-                                                <>
-                                                    <button className="btn btn-sm btn-success me-1" onClick={() => guardarCambios(proveedor.idProveedor)}>💾</button>
-                                                    <button className="btn btn-sm btn-secondary" onClick={cancelarEdicion}>❌</button>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <button className="btn btn-sm btn-outline-primary me-1" onClick={() => iniciarEdicion(proveedor)}>✏️</button>
-                                                    <button onClick={() => handleEliminarProveedor(proveedor.idProveedor)} className="btn btn-sm btn-outline-danger">🗑️</button>
-                                                </>
-                                            )}
-                                        </td>
-                                        <td>
-                                            {editandoId === proveedor.idProveedor ? (
-                                                <input value={formEdit.nitProveedor} onChange={e => setFormEdit(prev => ({ ...prev, nitProveedor: e.target.value }))} className="form-control" />
-                                            ) : (
-                                                proveedor.nitProveedor
-                                            )}
-                                        </td>
-                                        <td>
-                                            {editandoId === proveedor.idProveedor ? (
-                                                <input value={formEdit.nombreProveedor} onChange={e => setFormEdit(prev => ({ ...prev, nombreProveedor: e.target.value }))} className="form-control" />
-                                            ) : (
-                                                proveedor.nombreProveedor
-                                            )}
-                                        </td>
-                                        <td>
-                                            {editandoId === proveedor.idProveedor ? (
-                                                <input value={formEdit.correoElectronico} onChange={e => setFormEdit(prev => ({ ...prev, correoElectronico: e.target.value }))} className="form-control" />
-                                            ) : (
-                                                proveedor.correoElectronico
-                                            )}
-                                        </td>
-                                        <td>
-                                            {editandoId === proveedor.idProveedor ? (
-                                                <input value={formEdit.telefono} onChange={e => setFormEdit(prev => ({ ...prev, telefono: e.target.value }))} className="form-control" />
-                                            ) : (
-                                                proveedor.telefono
-                                            )}
+                                {loading ? (
+                                    <tr>
+                                        <td colSpan={5} className="text-center py-5">
+                                            <div className="spinner-border spinner-border-lg" role="status" style={{ width: "3rem", height: "3rem", color: "#5c0061" }}>
+                                                <span className="visually-hidden">Cargando...</span>
+                                            </div>
+                                            <p className="mt-2">Cargando proveedores...</p>
                                         </td>
                                     </tr>
-                                ))}
+                                ) : data.length === 0 ? (
+                                    <tr>
+                                        <td colSpan={5} className="text-center">No hay proveedores disponibles.</td>
+                                    </tr>
+                                ) : (
+                                    data.map((proveedor) => (
+                                        <tr key={proveedor.idProveedor}>
+                                            <td className="text-center">
+                                                {editandoId === proveedor.idProveedor ? (
+                                                    <>
+                                                        <button className="btn btn-sm btn-success me-1" onClick={() => guardarCambios(proveedor.idProveedor)}>💾</button>
+                                                        <button className="btn btn-sm btn-secondary" onClick={cancelarEdicion}>❌</button>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <button className="btn btn-sm btn-outline-primary me-1" onClick={() => iniciarEdicion(proveedor)}>✏️</button>
+                                                        <button onClick={() => handleEliminarProveedor(proveedor.idProveedor)} className="btn btn-sm btn-outline-danger">🗑️</button>
+                                                    </>
+                                                )}
+                                            </td>
+                                            <td>
+                                                {editandoId === proveedor.idProveedor ? (
+                                                    <input value={formEdit.nitProveedor} onChange={e => setFormEdit(prev => ({ ...prev, nitProveedor: e.target.value }))} className="form-control" />
+                                                ) : proveedor.nitProveedor}
+                                            </td>
+                                            <td>
+                                                {editandoId === proveedor.idProveedor ? (
+                                                    <input value={formEdit.nombreProveedor} onChange={e => setFormEdit(prev => ({ ...prev, nombreProveedor: e.target.value }))} className="form-control" />
+                                                ) : proveedor.nombreProveedor}
+                                            </td>
+                                            <td>
+                                                {editandoId === proveedor.idProveedor ? (
+                                                    <input value={formEdit.correoElectronico} onChange={e => setFormEdit(prev => ({ ...prev, correoElectronico: e.target.value }))} className="form-control" />
+                                                ) : proveedor.correoElectronico}
+                                            </td>
+                                            <td>
+                                                {editandoId === proveedor.idProveedor ? (
+                                                    <input value={formEdit.telefono} onChange={e => setFormEdit(prev => ({ ...prev, telefono: e.target.value }))} className="form-control" />
+                                                ) : proveedor.telefono}
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
                             </tbody>
                         </table>
                     </div>
@@ -200,22 +215,22 @@ export default function ProveedoresListaPage() {
 
                 <div className="row">
                     <div className="col-auto col-sm-12 col-md-6 col-xl-8 align-content-center">
-                        <button className="btn btn-submit">Agregar Proveedores</button>
+                        <button className="btn btn-submit" disabled={loading}>Agregar Proveedores</button>
                     </div>
 
                     <div className="col-auto col-sm-12 col-md-6 col-xl-4 align-content-center text-center">
                         <nav aria-label="...">
                             <ul className="pagination mb-0">
                                 <li className={`page-item ${page === 0 ? "disabled" : ""}`}>
-                                    <button className="page-link" onClick={() => setPage((p) => Math.max(p - 1, 0))}>Anterior</button>
+                                    <button className="page-link" onClick={() => setPage((p) => Math.max(p - 1, 0))} disabled={loading}>Anterior</button>
                                 </li>
                                 {getPageNumbers().map((i) => (
                                     <li key={i} className={`page-item ${page === i ? "active" : ""}`}>
-                                        <button className="page-link" onClick={() => setPage(i)}>{i + 1}</button>
+                                        <button className="page-link" onClick={() => setPage(i)} disabled={loading}>{i + 1}</button>
                                     </li>
                                 ))}
                                 <li className={`page-item ${page + 1 === totalPages ? "disabled" : ""}`}>
-                                    <button className="page-link" onClick={() => setPage((p) => Math.min(p + 1, totalPages - 1))}>Siguiente</button>
+                                    <button className="page-link" onClick={() => setPage((p) => Math.min(p + 1, totalPages - 1))} disabled={loading}>Siguiente</button>
                                 </li>
                             </ul>
                         </nav>

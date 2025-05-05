@@ -25,6 +25,7 @@ export default function ProductosListaPage() {
     });
     const [proveedores, setProveedores] = useState<ProveedorSelectDTO[]>([]);
     const [categorias, setCategorias] = useState<CategoriaSelectDTO[]>([]);
+    const [loading, setLoading] = useState(false);
 
     const camposOrdenables: Record<string, string> = {
         codigo: "codigoDeBarras",
@@ -46,9 +47,17 @@ export default function ProductosListaPage() {
     }, []);
 
     const cargarProductos = async (page: number, sortField: string, sortOrder: "asc" | "desc", nombre: string) => {
-        const res = await productoService.obtenerProductos(page, 5, sortField, sortOrder, nombre.trim());
-        setProductos(res.content);
-        setTotalPages(res.totalPages);
+        setLoading(true);
+        try {
+
+            const res = await productoService.obtenerProductos(page, 5, sortField, sortOrder, nombre.trim());
+            setProductos(res.content);
+            setTotalPages(res.totalPages);
+        } catch (error) {
+            console.error("Error al cargar productos:", error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleEliminarProducto = async (id: string) => {
@@ -156,7 +165,15 @@ export default function ProductosListaPage() {
                             </tr>
                         </thead>
                         <tbody>
-                            {productos.map((producto) => (
+                            {loading ? (
+                                <tr>
+                                    <td colSpan={8} className="text-center py-4">
+                                        <div className="spinner-border" style={{ color: "#5c0061" }} role="status">
+                                            <span className="visually-hidden">Cargando...</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ) : (productos.map((producto) => (
                                 <tr key={producto.idProducto}>
                                     <td className="text-center">
                                         {editandoId === producto.idProducto ? (
@@ -192,8 +209,8 @@ export default function ProductosListaPage() {
                                     <td>{editandoId === producto.idProducto ? <input className="form-control" value={productoEditado.codigoDeBarras} onChange={(e) => setProductoEditado({ ...productoEditado, codigoDeBarras: e.target.value })} /> : producto.codigoDeBarras}</td>
                                     <td>{editandoId === producto.idProducto ? <input className="form-control" value={productoEditado.nombre} onChange={(e) => setProductoEditado({ ...productoEditado, nombre: e.target.value })} /> : producto.nombre}</td>
                                     <td>{editandoId === producto.idProducto ? <input className="form-control" value={productoEditado.descripcion} onChange={(e) => setProductoEditado({ ...productoEditado, descripcion: e.target.value })} /> : producto.descripcion}</td>
-                                    <td>{editandoId === producto.idProducto ? <input type="number" className="form-control" value={productoEditado.precio} onChange={(e) => setProductoEditado({ ...productoEditado, precio: parseFloat(e.target.value) })} /> : `$ ${producto.precio}`}</td>
-                                    <td>{editandoId === producto.idProducto ? <input type="number" className="form-control" value={productoEditado.stock} onChange={(e) => setProductoEditado({ ...productoEditado, stock: parseInt(e.target.value) })} /> : producto.stock}</td>
+                                    <td>{editandoId === producto.idProducto ? (<input type="number" className="form-control" value={productoEditado.precio} onChange={(e) => setProductoEditado({ ...productoEditado, precio: parseFloat(e.target.value), })} />) : (`$ ${new Intl.NumberFormat('es-CO').format(producto.precio)}`)} </td>
+                                    <td>{editandoId === producto.idProducto ? (<input type="number" className="form-control" value={productoEditado.stock} onChange={(e) => setProductoEditado({ ...productoEditado, stock: parseInt(e.target.value), })} />) : (new Intl.NumberFormat('es-CO').format(producto.stock))} </td>
                                     <td>{editandoId === producto.idProducto ? (
                                         <select className="form-control" value={productoEditado.categoriaId} onChange={(e) => setProductoEditado({ ...productoEditado, categoriaId: e.target.value })}>
                                             <option value="">Seleccione una categoría</option>
@@ -211,7 +228,7 @@ export default function ProductosListaPage() {
                                         </select>
                                     ) : producto.proveedor.nombreProveedor}</td>
                                 </tr>
-                            ))}
+                            )))}
                         </tbody>
                     </table>
                 </div>
