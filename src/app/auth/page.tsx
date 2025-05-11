@@ -30,16 +30,19 @@ export default function LoginPage() {
 
       const usuarioLogueado = await usuarioService.obtenerPorId(idNumber);
 
-      if(user.nextStep.signInStep==="CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED"){
+      if (
+        user.nextStep.signInStep ===
+        "CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED"
+      ) {
         usuarioLogueado.esprimeravez = true;
         setAuthData(usuarioLogueado);
-        router.push('/auth/cambiar-clave');
-        return; 
+        router.push("/auth/cambiar-clave");
+        return;
       }
-      
+
       setAuthData(usuarioLogueado);
-      
-      router.push('/dashboard');
+
+      router.push("/dashboard");
     } catch (error) {
       console.error("Error de login", error);
       alert("Credenciales inválidas");
@@ -84,7 +87,7 @@ export default function LoginPage() {
         <input
           type="submit"
           value="Iniciar sesión"
-          className="login-box__button"
+          className="login-box__button mt-3"
         />
 
         <a href="#" className="login-box__forgot">
