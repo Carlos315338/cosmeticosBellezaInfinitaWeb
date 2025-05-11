@@ -60,4 +60,20 @@ export const productoService = {
         const res = await api.post(`${CONTEXT}/producto/updateProducto/${id}`, updateProducto);
         return res.data.message;
     },
+
+    guardarProducto: async (updateProducto: ProductoUpdateDTO): Promise<string> => {
+        const res = await api.post(`${CONTEXT}/producto/guardarProducto`, updateProducto);
+        return res.data.message;
+    },
+
+    guardarProveedor: async (proveedor: ProveedorDTO): Promise<string> => {
+        const res = await api.post(`${CONTEXT}/proveedor/guardarProveedor`, proveedor);
+        return res.data.message;
+    },
+
+    verificarNit: async (nit: string): Promise<boolean> => {
+        const res = await api.get(`${CONTEXT}/proveedor/existeNitProveedor`, { params: { nit } });
+        return res.data.data;
+    },
+
 };
